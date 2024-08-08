@@ -2,39 +2,33 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace QuickHelp.Compression
+namespace QuickHelp.Compression;
+
+/// <summary>
+/// Maintains a list of keywords used for keyword compression (also known
+/// as dictionary substitution).
+/// </summary>
+/// <remarks>
+/// The number of keywords must not exceed 1024.
+/// </remarks>
+public class KeywordList : List<byte[]> { }
+
+internal static class KeywordListSerializer
 {
-    /// <summary>
-    /// Maintains a list of keywords used for keyword compression (also known
-    /// as dictionary substitution).
-    /// </summary>
-    /// <remarks>
-    /// The number of keywords must not exceed 1024.
-    /// </remarks>
-    public class KeywordList : List<byte[]>
+    public static KeywordList Deserialize(byte[] buffer)
     {
+        if (buffer == null)
+            throw new ArgumentNullException(nameof(buffer));
 
-    }
-
-    internal static class KeywordListSerializer
-    {
-        public static KeywordList Deserialize(byte[] buffer)
+        // Serialized sequentially as length-prefixed string.
+        KeywordList keywords = [];
+        using var reader = new BinaryReader(new MemoryStream(buffer));
+        while (reader.BaseStream.Position < reader.BaseStream.Length)
         {
-            if (buffer == null)
-                throw new ArgumentNullException(nameof(buffer));
-
-            // Serialized sequentially as length-prefixed string.
-            KeywordList keywords = new KeywordList();
-            using (BinaryReader reader = new BinaryReader(new MemoryStream(buffer)))
-            {
-                while (reader.BaseStream.Position < reader.BaseStream.Length)
-                {
-                    byte length = reader.ReadByte();
-                    byte[] keyword = reader.ReadBytes(length);
-                    keywords.Add(keyword);
-                }
-            }
-            return keywords;
+            byte length = reader.ReadByte();
+            byte[] keyword = reader.ReadBytes(length);
+            keywords.Add(keyword);
         }
+        return keywords;
     }
 }
