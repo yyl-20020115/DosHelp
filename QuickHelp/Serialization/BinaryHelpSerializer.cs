@@ -320,10 +320,10 @@ public class BinaryHelpDeserializer
         // The rest of the buffer is a huffman stream wrapping a
         // compression stream wrapping binary-encoded topic data.
         byte[] output;
-        using (var memoryStream = new MemoryStream(input, 2, input.Length - 2))
-        using (var huffmanStream = new HuffmanStream(memoryStream, options.HuffmanTree))
-        using (var compressionStream = new CompressionStream(huffmanStream, options.Keywords))
-        using (var compressionReader = new BinaryReader(compressionStream))
+        using var memoryStream = new MemoryStream(input, 2, input.Length - 2);
+        using var huffmanStream = new HuffmanStream(memoryStream, options.HuffmanTree);
+        using var compressionStream = new CompressionStream(huffmanStream, options.Keywords);
+        using var compressionReader = new BinaryReader(compressionStream);
         {
             output = compressionReader.ReadBytes(decompressedLength);
         }
@@ -344,8 +344,8 @@ public class BinaryHelpDeserializer
 
     static HelpTopic DecompileTopic(byte[] buffer, char controlCharacter)
     {
-        HelpTopic topic = new HelpTopic();
-        BufferReader reader = new BufferReader(buffer, Graphic437);
+        var topic = new HelpTopic();
+        var reader = new BufferReader(buffer, Graphic437);
         while (!reader.IsEOF)
         {
             HelpLine line = null;

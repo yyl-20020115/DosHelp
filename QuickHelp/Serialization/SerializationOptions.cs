@@ -5,11 +5,11 @@ using QuickHelp.Compression;
 namespace QuickHelp.Serialization;
 
 /// <summary>
-/// Contains options to control the serialization process.
+/// Contains options to control the serialization process.  `
 /// </summary>
 public class SerializationOptions
 {
-    protected readonly List<byte[]> m_keywords = [];
+    //protected readonly List<byte[]> m_keywords = [];
 
     /// <summary>
     /// Gets or sets the serialized format.

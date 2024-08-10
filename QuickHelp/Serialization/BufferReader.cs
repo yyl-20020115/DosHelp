@@ -36,14 +36,12 @@ public class BufferReader
 
     public BufferReader(byte[] buffer, int index, int count, Encoding encoding)
     {
-        if (buffer == null)
-            throw new ArgumentNullException("buffer");
+        this.buffer = buffer ?? throw new ArgumentNullException("buffer");
         if (index < 0 || index > buffer.Length)
             throw new ArgumentOutOfRangeException("index");
+        this.index = index;
         if (count < 0 || count > buffer.Length - index)
             throw new ArgumentOutOfRangeException("count");
-        this.buffer = buffer;
-        this.index = index;
         this.endIndex = index + count;
         this.encoding = encoding ?? throw new ArgumentNullException("encoding");
     }
