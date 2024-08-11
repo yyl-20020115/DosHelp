@@ -184,9 +184,9 @@ public enum HelpCommand : int
 [AttributeUsage(AttributeTargets.All, AllowMultiple=true)]
 class HelpCommandFormatAttribute : Attribute
 {
-    readonly string dotCommand;
-    readonly string colonCommand;
-    readonly string parameterFormat;
+    private readonly string dotCommand;
+    private readonly string colonCommand;
+    private readonly string parameterFormat;
 
     public HelpCommandFormatAttribute(
         string dotCommand, string colonCommand, string parameterFormat)
@@ -215,10 +215,8 @@ static class HelpCommandConverter
     public static bool ProcessCommand(
         string line, char controlCharacter, HelpTopic topic)
     {
-        HelpCommand command;
-        string parameter;
         // if (!ParseCommand(line, controlCharacter, out command, out parameter))
-        if (!ParseColonCommand(line, controlCharacter, out command, out parameter))
+        if (!ParseColonCommand(line, controlCharacter, out HelpCommand command, out string parameter))
             return false;
 
         ExecuteCommand(command, parameter, topic);
@@ -338,14 +336,9 @@ static class HelpCommandConverter
         command = HelpCommand.None;
         parameters = "";
 
-        if (string.IsNullOrEmpty(line))
-            return false;
-        else if (line[0] == '.')
-            return ParseDotCommand(line, out command, out parameters);
-        else if (line[0] == controlCharacter)
-            return ParseColonCommand(line, controlCharacter, out command, out parameters);
-        else
-            return false;
+        return !string.IsNullOrEmpty(line) && (line[0] == '.'
+            ? ParseDotCommand(line, out command, out parameters)
+            : line[0] == controlCharacter && ParseColonCommand(line, controlCharacter, out command, out parameters));
     }
 
     private static bool ParseColonCommand(

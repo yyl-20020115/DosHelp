@@ -9,12 +9,12 @@ namespace QuickHelp.Formatters;
 /// </summary>
 public class EmbeddedHtmlFormatter : HtmlFormatter
 {
-    private static string s_styleSheet = LoadStyleSheet();
+    private static readonly string s_styleSheet = LoadStyleSheet();
 
     private static string LoadStyleSheet()
     {
-        Assembly assembly = Assembly.GetExecutingAssembly();
-        string resourceName = "QuickHelp.Formatters.Default.css";
+        var assembly = Assembly.GetExecutingAssembly();
+        var resourceName = "QuickHelp.Formatters.Default.css";
         using var stream = assembly.GetManifestResourceStream(resourceName);
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();

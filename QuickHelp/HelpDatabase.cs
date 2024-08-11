@@ -77,8 +77,7 @@ public class HelpDatabase
     /// is controlled by the <code>IsCaseSensitive</code> property.</remarks>
     public void AddContext(string contextString, int topicIndex)
     {
-        if (contextString == null)
-            throw new ArgumentNullException(nameof(contextString));
+        ArgumentNullException.ThrowIfNull(contextString);
         if (topicIndex < 0)
             throw new IndexOutOfRangeException(nameof(topicIndex));
 
@@ -95,14 +94,9 @@ public class HelpDatabase
     /// is controlled by the <code>IsCaseSensitive</code> property.</remarks>
     public HelpTopic ResolveContext(string contextString)
     {
-        if (contextString == null)
-            throw new ArgumentNullException("contextString");
+        ArgumentNullException.ThrowIfNull(contextString);
 
-        int topicIndex;
-        if (contextMap.TryGetValue(contextString, out topicIndex))
-            return topics[topicIndex];
-        else
-            return null;
+        return contextMap.TryGetValue(contextString, out int topicIndex) ? topics[topicIndex] : null;
     }
 }
 
@@ -113,8 +107,7 @@ public class HelpTopicCollection : IList<HelpTopic>
 
     internal HelpTopicCollection(HelpDatabase database)
     {
-        if (database == null)
-            throw new ArgumentNullException(nameof(database));
+        ArgumentNullException.ThrowIfNull(database);
         m_database = database;
     }
 
@@ -201,7 +194,7 @@ public class HelpTopicCollection : IList<HelpTopic>
 
     public void RemoveAt(int index)
     {
-        HelpTopic topic = m_topics[index];
+        var topic = m_topics[index];
         m_topics.RemoveAt(index);
         Detach(topic);
     }

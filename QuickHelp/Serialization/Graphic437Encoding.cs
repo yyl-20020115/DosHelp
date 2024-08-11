@@ -5,36 +5,31 @@ namespace QuickHelp.Serialization;
 
 public class Graphic437Encoding : Encoding
 {
-    private static readonly Encoding CP437 = Encoding.GetEncoding(437);
-    private const string GraphicCharacters = "\0☺☻♥♦♣♠•◘○◙♂♀♪♫☼►◄↕‼¶§▬↨↑↓→←∟↔▲▼";
+    public static readonly Encoding CP437 = Encoding.GetEncoding(437);
+    public const string GraphicCharacters = "\0☺☻♥♦♣♠•◘○◙♂♀♪♫☼►◄↕‼¶§▬↨↑↓→←∟↔▲▼";
 
     public static bool IsControlCharacter(char c) => (c < 32) || (c == 127);
 
     public static bool ContainsControlCharacter(string s)
     {
-        if (s == null)
-            throw new ArgumentNullException(nameof(s));
+        ArgumentNullException.ThrowIfNull(s);
 
         for (int i = 0; i < s.Length; i++)
-        {
             if (IsControlCharacter(s[i]))
                 return true;
-        }
         return false;
     }
 
-    public static void SubstituteControlCharacters(char[] chars)
+    public static char[] SubstituteControlCharacters(char[] chars)
     {
-        if (chars == null)
-            throw new ArgumentNullException(nameof(chars));
+        ArgumentNullException.ThrowIfNull(chars);
 
-        SubstituteControlCharacters(chars, 0, chars.Length);
+        return SubstituteControlCharacters(chars, 0, chars.Length);
     }
 
-    public static void SubstituteControlCharacters(char[] chars, int index, int count)
+    public static char[] SubstituteControlCharacters(char[] chars, int index, int count)
     {
-        if (chars == null)
-            throw new ArgumentNullException(nameof(chars));
+        ArgumentNullException.ThrowIfNull(chars);
         if (index < 0 || index > chars.Length)
             throw new ArgumentOutOfRangeException(nameof(index));
         if (count < 0 || count > chars.Length - index)
@@ -42,25 +37,22 @@ public class Graphic437Encoding : Encoding
 
         for (int i = index; i < index + count; i++)
         {
-            if (chars[i] < 32)
-                chars[i] = GraphicCharacters[chars[i]];
-            else if (chars[i] == 127)
-                chars[i] = '⌂';
+            chars[i] = chars[i] < 32 
+                ? GraphicCharacters[chars[i]] 
+                : chars[i] == 127 
+                ? '⌂' 
+                : chars[i]
+                ;
         }
+        return chars;
     }
 
-    public static string SubstituteControlCharacters(string s)
-    {
-        if (s == null)
-            return null;
-
-        if (!ContainsControlCharacter(s))
-            return s;
-
-        char[] chars = s.ToCharArray();
-        SubstituteControlCharacters(chars);
-        return new string(chars);
-    }
+    public static string SubstituteControlCharacters(string text) =>
+        text == null 
+        ? null : !ContainsControlCharacter(text) 
+        ? text 
+        : new string(SubstituteControlCharacters(text.ToCharArray()))
+        ;
 
     public override int GetByteCount(char[] chars, int index, int count) => CP437.GetByteCount(chars, index, count);
 

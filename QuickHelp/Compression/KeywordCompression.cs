@@ -17,8 +17,7 @@ internal static class KeywordListSerializer
 {
     public static KeywordList Deserialize(byte[] buffer)
     {
-        if (buffer == null)
-            throw new ArgumentNullException(nameof(buffer));
+        ArgumentNullException.ThrowIfNull(buffer);
 
         // Serialized sequentially as length-prefixed string.
         KeywordList keywords = [];

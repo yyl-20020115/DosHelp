@@ -54,7 +54,7 @@ public class HelpUri
         if (topicIndex < 0 || topicIndex >= 0x8000)
             throw new ArgumentOutOfRangeException(nameof(topicIndex));
 
-        this.target = string.Format("@L{0:X4}", topicIndex | 0x8000);
+        this.target = $"@L{topicIndex | 0x8000:X4}";
     }
 
     /// <summary>
@@ -68,26 +68,35 @@ public class HelpUri
     /// <summary>
     /// Gets the type of location this uri refers to.
     /// </summary>
-    public HelpUriType Type => target == ""
+    public HelpUriType Type => string.IsNullOrEmpty(target)
                 ? HelpUriType.None
-                : target.StartsWith("@")
-                ? TopicIndex >= 0 ? HelpUriType.LocalTopic : HelpUriType.LocalContext
-                : target.StartsWith("!")
+                : target.StartsWith('@')
+                ? TopicIndex >= 0 
+                ? HelpUriType.LocalTopic 
+                : HelpUriType.LocalContext
+                : target.StartsWith('!')
                 ? HelpUriType.Command
-                : target.EndsWith("!") ? HelpUriType.File : target.Contains("!") ? HelpUriType.GlobalContext : HelpUriType.Context;
+                : target.EndsWith('!') 
+                ? HelpUriType.File 
+                : target.Contains('!') 
+                ? HelpUriType.GlobalContext 
+                : HelpUriType.Context
+                ;
 
     /// <summary>
     /// Gets the topic index specified by this uri, or -1 if this uri
     /// does not specify a topic index.
     /// </summary>
-    public int TopicIndex => target.Length == 6 && target.StartsWith("@L") && int.TryParse(
-                    target.Substring(2),
-                    NumberStyles.AllowHexSpecifier,
-                    CultureInfo.InvariantCulture,
-                    out int topicIndexOr8000) &&
-                    (topicIndexOr8000 & 0x8000) != 0
+    public int TopicIndex => target.Length == 6 && target.StartsWith("@L") 
+             && int.TryParse(
+                target.AsSpan(2),
+                NumberStyles.AllowHexSpecifier,
+                CultureInfo.InvariantCulture,
+                out int topicIndexOr8000) &&
+                (topicIndexOr8000 & 0x8000) != 0
                 ? topicIndexOr8000 & 0x7FFF
-                : -1;
+                : -1
+            ;
 
     /// <summary>
     /// Gets the database name component of the url.
@@ -117,7 +126,7 @@ public class HelpUri
         get
         {
             int k = target.IndexOf('!');
-            return k < 0 ? target : target.Substring(k + 1);
+            return k < 0 ? target : target[(k + 1)..];
         }
     }
 

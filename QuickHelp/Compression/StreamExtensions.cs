@@ -8,10 +8,8 @@ static class StreamExtensions
     public static int ReadBytes(
         Stream stream, byte[] buffer, int offset, int count)
     {
-        if (stream == null)
-            throw new ArgumentNullException(nameof(stream));
-        if (buffer == null)
-            throw new ArgumentNullException(nameof(buffer));
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(buffer);
         if (offset < 0 || offset > buffer.Length)
             throw new ArgumentOutOfRangeException(nameof(offset));
         if (count < 0 || count > buffer.Length - offset)
@@ -30,10 +28,8 @@ static class StreamExtensions
     public static void WriteBytes(
         Stream stream, byte[] buffer, int offset, int count)
     {
-        if (stream == null)
-            throw new ArgumentNullException(nameof(stream));
-        if (buffer == null)
-            throw new ArgumentNullException(nameof(buffer));
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(buffer);
         if (offset < 0 || offset > buffer.Length)
             throw new ArgumentOutOfRangeException(nameof(offset));
         if (count < 0 || count > buffer.Length - offset)

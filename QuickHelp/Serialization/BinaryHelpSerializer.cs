@@ -30,7 +30,8 @@ public class BinaryHelpDeserializer
         }
     }
 
-    public HelpDatabase DeserializeDatabase(Stream stream) => DeserializeDatabase(stream, new SerializationOptions());
+    public HelpDatabase DeserializeDatabase(Stream stream)
+        => DeserializeDatabase(stream, new());
 
     /// <summary>
     /// Deserializes the next help database from a binary reader.
@@ -44,10 +45,8 @@ public class BinaryHelpDeserializer
     public HelpDatabase DeserializeDatabase(
         Stream stream, SerializationOptions options)
     {
-        if (stream == null)
-            throw new ArgumentNullException(nameof(stream));
-        if (options == null)
-            options = new SerializationOptions();
+        ArgumentNullException.ThrowIfNull(stream);
+        options ??= new SerializationOptions();
 
         CheckSignature(stream);
 
@@ -56,80 +55,78 @@ public class BinaryHelpDeserializer
         var database = new HelpDatabase(header.DatabaseName, isCaseSensitive);
         options.ControlCharacter = Graphic437.GetChars([header.ControlCharacter])[0];
 
-        using (var streamView = new StreamView(stream, header.DatabaseSize, 0x46))
-        using (var reader = new BinaryReader(streamView))
+        using var streamView = new StreamView(stream, header.DatabaseSize, 0x46);
+        using var reader = new BinaryReader(streamView);
+        var topicOffsets = ReadTopicIndex(reader, header);
+
+        // Read Context Strings and Context Map sections.
+        if (true)
         {
-            int[] topicOffsets = ReadTopicIndex(reader, header);
-
-            // Read Context Strings and Context Map sections.
-            if (true)
+            var contextStrings = ReadContextStrings(reader, header);
+            var contextMap = ReadContextMap(reader, header);
+            for (int i = 0; i < header.ContextCount; i++)
             {
-                string[] contextStrings = ReadContextStrings(reader, header);
-                UInt16[] contextMap = ReadContextMap(reader, header);
-                for (int i = 0; i < header.ContextCount; i++)
-                {
-                    database.AddContext(contextStrings[i], contextMap[i]);
-                }
+                database.AddContext(contextStrings[i], contextMap[i]);
             }
-
-            // Read Keywords section.
-            if (header.KeywordsOffset > 0)
-            {
-                options.Keywords = ReadKeywords(reader, header);
-                options.Compression |= CompressionFlags.Keyword;
-                options.Compression |= CompressionFlags.ExtendedKeyword;
-            }
-            else
-            {
-                options.Keywords = null;
-            }
-
-            // Read Huffman Tree section.
-            if (header.HuffmanTreeOffset > 0)
-            {
-                options.HuffmanTree = ReadHuffmanTree(reader, header);
-                // file.HuffmanTree.Dump();
-                options.Compression |= CompressionFlags.Huffman;
-            }
-            else
-            {
-                options.HuffmanTree = null;
-            }
-
-            // Read topic data.
-            if (reader.BaseStream.Position != header.TopicTextOffset)
-            {
-                throw new InvalidDataException("Incorrect topic position.");
-            }
-            for (int i = 0; i < header.TopicCount; i++)
-            {
-                if (reader.BaseStream.Position != topicOffsets[i])
-                    throw new InvalidDataException("Incorrect topic position.");
-                int inputLength = topicOffsets[i + 1] - topicOffsets[i];
-
-                byte[] inputData = reader.ReadBytes(inputLength);
-                HelpTopic topic = DeserializeTopic(inputData, options);
-                database.Topics.Add(topic);
-            }
-
-            // TODO: check position
-            if (reader.BaseStream.Position != topicOffsets[header.TopicCount])
-                throw new InvalidDataException("Incorrect topic end position.");
-            if (reader.BaseStream.Position != header.DatabaseSize)
-                throw new InvalidDataException("Incorrect database size.");
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine(string.Format(
-                "Decoded database {0} of {1} bytes.",
-                database.Name, header.DatabaseSize));
-#endif
         }
+
+        // Read Keywords section.
+        if (header.KeywordsOffset > 0)
+        {
+            options.Keywords = ReadKeywords(reader, header);
+            options.Compression |= CompressionFlags.Keyword;
+            options.Compression |= CompressionFlags.ExtendedKeyword;
+        }
+        else
+        {
+            options.Keywords = null;
+        }
+
+        // Read Huffman Tree section.
+        if (header.HuffmanTreeOffset > 0)
+        {
+            options.HuffmanTree = ReadHuffmanTree(reader, header);
+            // file.HuffmanTree.Dump();
+            options.Compression |= CompressionFlags.Huffman;
+        }
+        else
+        {
+            options.HuffmanTree = null;
+        }
+
+        // Read topic data.
+        if (reader.BaseStream.Position != header.TopicTextOffset)
+        {
+            throw new InvalidDataException("Incorrect topic position.");
+        }
+        for (int i = 0; i < header.TopicCount; i++)
+        {
+            if (reader.BaseStream.Position != topicOffsets[i])
+                throw new InvalidDataException("Incorrect topic position.");
+            int inputLength = topicOffsets[i + 1] - topicOffsets[i];
+
+            var inputData = reader.ReadBytes(inputLength);
+            var topic = DeserializeTopic(inputData, options);
+            database.Topics.Add(topic);
+        }
+
+        // TODO: check position
+        if (reader.BaseStream.Position != topicOffsets[header.TopicCount])
+            throw new InvalidDataException("Incorrect topic end position.");
+        if (reader.BaseStream.Position != header.DatabaseSize)
+            throw new InvalidDataException("Incorrect database size.");
+#if DEBUG
+        System.Diagnostics.Debug.WriteLine(string.Format(
+            "Decoded database {0} of {1} bytes.",
+            database.Name, header.DatabaseSize));
+#endif
         return database;
     }
 
     private static void CheckSignature(Stream stream)
     {
-        int byte1 = stream.ReadByte();
-        int byte2 = stream.ReadByte();
+        var byte1 = stream.ReadByte();
+        var byte2 = stream.ReadByte();
         if (!(byte1 == 0x4C && byte2 == 0x4E))
         {
             throw new InvalidDataException("File signature mismatch.");
@@ -152,7 +149,7 @@ public class BinaryHelpDeserializer
             Padding3 = reader.ReadUInt16()
         };
 
-        byte[] stringData = reader.ReadBytes(14);
+        var stringData = reader.ReadBytes(14);
         header.DatabaseName = Encoding.ASCII.GetString(stringData);
         int k = header.DatabaseName.IndexOf('\0');
         if (k >= 0)
@@ -188,7 +185,7 @@ public class BinaryHelpDeserializer
         if (reader.BaseStream.Position != header.TopicIndexOffset)
             throw new InvalidDataException("Incorrect Topic Index section position.");
 
-        int[] topicOffsets = new int[header.TopicCount + 1];
+        var topicOffsets = new int[header.TopicCount + 1];
         for (int i = 0; i <= header.TopicCount; i++)
         {
             topicOffsets[i] = reader.ReadInt32();
@@ -204,7 +201,7 @@ public class BinaryHelpDeserializer
         // TODO: the NULL at the very end produces an extra, empty context string.
         // TODO: check exact number of context strings.
         int size = header.ContextMapOffset - header.ContextStringsOffset;
-        string all = Encoding.ASCII.GetString(reader.ReadBytes(size));
+        var all = Encoding.ASCII.GetString(reader.ReadBytes(size));
         return all.Split('\0');
     }
 
@@ -213,7 +210,7 @@ public class BinaryHelpDeserializer
         if (reader.BaseStream.Position != header.ContextMapOffset)
             throw new InvalidDataException("Incorrect Context Map section position.");
 
-        UInt16[] contextMap = new UInt16[header.ContextCount];
+        var contextMap = new UInt16[header.ContextCount];
         for (int i = 0; i < header.ContextCount; i++)
         {
             contextMap[i] = reader.ReadUInt16();
@@ -230,11 +227,10 @@ public class BinaryHelpDeserializer
 
         int sectionSize = (header.HuffmanTreeOffset > 0 ? header.HuffmanTreeOffset : header.TopicTextOffset)
             - header.KeywordsOffset;
-        byte[] section = reader.ReadBytes(sectionSize);
-        if (section.Length != sectionSize)
-            throw new InvalidDataException("Cannot fully read dictionary section.");
-
-        return KeywordListSerializer.Deserialize(section).ToArray();
+        var section = reader.ReadBytes(sectionSize);
+        return section.Length != sectionSize
+            ? throw new InvalidDataException("Cannot fully read dictionary section.")
+            : KeywordListSerializer.Deserialize(section).ToArray();
     }
 
     private static HuffmanTree ReadHuffmanTree(BinaryReader reader, BinaryHelpFileHeader header)
@@ -245,10 +241,8 @@ public class BinaryHelpDeserializer
         }
 
         //int sectionSize = file.Header.TopicTextOffset - file.Header.HuffmanTreeOffset;
-        HuffmanTree tree = HuffmanTree.Deserialize(reader);
-        if (tree.IsEmpty || tree.IsSingular)
-            throw new InvalidDataException("Invalid huffman tree.");
-        return tree;
+        var tree = HuffmanTree.Deserialize(reader);
+        return tree.IsEmpty || tree.IsSingular ? throw new InvalidDataException("Invalid huffman tree.") : tree;
     }
 
     public HelpTopic DeserializeTopic(byte[] input, SerializationOptions options)
@@ -263,7 +257,7 @@ public class BinaryHelpDeserializer
         }
         int outputLength = BitConverter.ToUInt16(input, 0);
 
-        byte[] encodedData = new byte[input.Length - 2];
+        var encodedData = new byte[input.Length - 2];
         Array.Copy(input, 2, encodedData, 0, encodedData.Length);
 
         // Step 3. Huffman decoding pass.
@@ -274,10 +268,10 @@ public class BinaryHelpDeserializer
             compactData = encodedData;
 
         // Step 2. Decompression pass.
-        byte[] binaryData = Decompress(compactData, outputLength, options.Keywords);
+        var binaryData = Decompress(compactData, outputLength, options.Keywords);
 
         // Step 1. Decompile topic.
-        HelpTopic topic = DecompileTopic(binaryData, options.ControlCharacter);
+        var topic = DecompileTopic(binaryData, options.ControlCharacter);
         topic.Source = binaryData;
 
         return topic;
@@ -285,12 +279,10 @@ public class BinaryHelpDeserializer
 
     static byte[] HuffmanDecode(byte[] input, HuffmanTree huffmanTree)
     {
-        using (var inputStream = new MemoryStream(input))
-        using (var huffmanStream = new HuffmanStream(inputStream, huffmanTree))
-        using (var reader = new BinaryReader(huffmanStream))
-        {
-            return reader.ReadBytes(1024 * 1024);
-        }
+        using var inputStream = new MemoryStream(input);
+        using var huffmanStream = new HuffmanStream(inputStream, huffmanTree);
+        using var reader = new BinaryReader(huffmanStream);
+        return reader.ReadBytes(1024 * 1024);
     }
 
     static byte[] Decompress(byte[] input, int outputLength, byte[][] keywords)
@@ -302,7 +294,7 @@ public class BinaryHelpDeserializer
     }
 
     private static readonly Graphic437Encoding Graphic437 =
-        new Graphic437Encoding();
+        new();
 
     private byte[] DecompressTopicData(byte[] input, HelpTopic topic,
         SerializationOptions options)
@@ -384,7 +376,7 @@ public class BinaryHelpDeserializer
     internal static void DecodeTopic(
         byte[] buffer, HelpTopic topic, char controlCharacter)
     {
-        BufferReader reader = new BufferReader(buffer, Graphic437);
+        var reader = new BufferReader(buffer, Graphic437);
 
         while (!reader.IsEOF)
         {
@@ -426,12 +418,12 @@ public class BinaryHelpDeserializer
 
         // Read text length in bytes.
         int textLength = reader.ReadByte();
-        string text = reader.ReadFixedLengthString(textLength - 1);
+        var text = reader.ReadFixedLengthString(textLength - 1);
         line = new HelpLine(text);
 
         // Read byte count of attributes.
         int attrLength = reader.ReadByte();
-        BufferReader attrReader = reader.ReadBuffer(attrLength - 1);
+        var attrReader = reader.ReadBuffer(attrLength - 1);
         DecodeLineAttributes(line, attrReader);
 
         // Read hyperlinks.
@@ -471,7 +463,7 @@ public class BinaryHelpDeserializer
         int charIndex = 0;
         for (int chunkIndex = 0; !reader.IsEOF; chunkIndex++)
         {
-            TextStyle textStyle = TextStyle.None;
+            var textStyle = TextStyle.None;
 
             // Read attribute byte except for the first chunk (for which
             // default attributes are applied).

@@ -39,8 +39,7 @@ public class HuffmanTree
 
     public static HuffmanTree Deserialize(BinaryReader reader)
     {
-        if (reader == null)
-            throw new ArgumentNullException(nameof(reader));
+        ArgumentNullException.ThrowIfNull(reader);
 
         List<short> nodeValues = new(511);
         while (true)
@@ -79,22 +78,18 @@ public class HuffmanTree
         if (n % 2 == 0)
             throw new InvalidDataException("Invalid Huffman tree: expecting an odd number of nodes.");
 
-        HuffmanTreeNode[] nodes = new HuffmanTreeNode[n];
+        var nodes = new HuffmanTreeNode[n];
         nodes[0] = new HuffmanTreeNode();
 
         bool[] symbolExists = new bool[256];
         for (int i = 0; i < n; i++)
         {
-            HuffmanTreeNode node = nodes[i];
-            if (node == null)
-                throw new InvalidDataException("Invalid Huffman tree: orphaned node encountered.");
-                
+            var node = nodes[i] ?? throw new InvalidDataException("Invalid Huffman tree: orphaned node encountered.");
             node.Value = new HuffmanTreeNodeData();
-
-            short nodeValue = nodeValues[i];
+            var nodeValue = nodeValues[i];
             if (nodeValue < 0) // leaf; symbol stored in low byte
             {
-                byte symbol = (byte)nodeValue;
+                var symbol = (byte)nodeValue;
                 if (symbolExists[symbol])
                 {
                     throw new InvalidDataException("Invalid Huffman tree: symbol already encoded.");
@@ -127,13 +122,12 @@ public class HuffmanTree
 
     public void Serialize(BinaryWriter writer)
     {
-        if (writer == null)
-            throw new ArgumentNullException(nameof(writer));
+        ArgumentNullException.ThrowIfNull(writer);
 
-        Int16[] words = InternalSerialize();
+        var words = InternalSerialize();
 
         // Append extra word at the end for terminating NULL.
-        byte[] bytes = new byte[words.Length * 2 + 2]; 
+        var bytes = new byte[words.Length * 2 + 2]; 
         Buffer.BlockCopy(words, 0, bytes, 0, words.Length * 2);
         writer.Write(bytes);
     }
@@ -141,7 +135,7 @@ public class HuffmanTree
     private Int16[] InternalSerialize()
     {
         int n = (this.SymbolCount == 0) ? 0 : 2 * this.SymbolCount - 1;
-        Int16[] sequence = new Int16[n];
+        var sequence = new Int16[n];
         if (n == 0)
             return sequence;
 
@@ -149,10 +143,7 @@ public class HuffmanTree
         foreach (HuffmanTreeNode node in Root.PostOrderTraverse())
         {
             node.Value.Index = --index;
-            if (node.IsLeaf)
-                sequence[index] = (Int16)(0x8000 | node.Value.Symbol);
-            else
-                sequence[index] = (Int16)(node.LeftChild.Value.Index * 2);
+            sequence[index] = node.IsLeaf ? (Int16)(0x8000 | node.Value.Symbol) : (Int16)(node.LeftChild.Value.Index * 2);
         }
 #if DEBUG
         System.Diagnostics.Debug.Assert(index == 0);
@@ -258,8 +249,7 @@ public struct HuffmanDecoder
 
     public HuffmanDecoder(HuffmanTree huffmanTree)
     {
-        if (huffmanTree == null)
-            throw new ArgumentNullException(nameof(huffmanTree));
+        ArgumentNullException.ThrowIfNull(huffmanTree);
         m_node = huffmanTree.Root;
     }
 

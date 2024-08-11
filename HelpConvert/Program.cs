@@ -9,22 +9,16 @@ namespace HelpConvert;
 
 public class Program
 {
-    public static void Main(string[] args)
-    {
-        Convert(args, false);
+    public static int Main(string[] args) 
+        => args.Length == 0 ? PrintUsage() : Convert(args, false);
 
-#if DEBUG
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
-#endif
-    }
-
-    static void PrintUsage()
+    static int PrintUsage()
     {
         Console.WriteLine("HelpConvert input-file [input-file ...]");
+        return 0;
     }
 
-    static void Convert(string[] fileNames, bool isDryRun)
+    static int Convert(string[] fileNames, bool isDryRun)
     {
         var system = new HelpSystem();
         var converter = new BatchHtmlFormatter(system);
@@ -39,42 +33,37 @@ public class Program
         // export HTML
         foreach (var database in system.Databases)
         {
-            // TODO: check invalid chars in database name
             var htmlPath = database.Name.Replace('.', '_');
-            Directory.CreateDirectory(htmlPath);
 
-            int topicIndex = 0;
-            foreach (var topic in database.Topics)
+            if ((htmlPath =PathUtils.EnsureDirectory(htmlPath))!=string.Empty)
             {
-                var html = converter.FormatTopic(topic);
-                var htmlFileName = Path.Combine(htmlPath, string.Format("T{0:X4}.html", topicIndex));
-                if (!isDryRun)
+                int topicIndex = 0;
+                foreach (var topic in database.Topics)
                 {
-                    using var writer = new StreamWriter(htmlFileName, false, Encoding.UTF8);
-                    writer.Write(html);
+                    var html = converter.FormatTopic(topic);
+                    var htmlFileName = Path.Combine(htmlPath, string.Format("T{0:X4}.html", topicIndex));
+                    if (!isDryRun)
+                    {
+                        using var writer = new StreamWriter(htmlFileName, false, Encoding.UTF8);
+                        writer.Write(html);
+                    }
+                    topicIndex++;
                 }
-                topicIndex++;
-            }
 
-            // Create contents.html.
-            var topic1 = system.ResolveUri(database, new HelpUri("h.contents"));
-            if (topic1 != null && topic1.Database == database)
-            {
-                if (!isDryRun)
+                // Create contents.html.
+                var topic1 = system.ResolveUri(database, new HelpUri("h.contents"));
+                if (topic1 != null && topic1.Database == database)
                 {
-                    using var writer = new StreamWriter(Path.Combine(htmlPath, "Contents.html"));
-                    writer.WriteLine("<meta http-equiv=\"refresh\" content=\"0; url=T{0:X4}.html\">",
-                        topic1.TopicIndex);
+                    if (!isDryRun)
+                    {
+                        using var writer = new StreamWriter(Path.Combine(htmlPath, "Contents.html"));
+                        writer.WriteLine("<meta http-equiv=\"refresh\" content=\"0; url=T{0:X4}.html\">",
+                            topic1.TopicIndex);
+                    }
                 }
             }
         }
-    }
-
-    static string GetDatabasePath(HelpDatabase database)
-    {
-        string path = database.Name.Replace('.', '_');
-        Directory.CreateDirectory(path);
-        return path;
+        return 0;
     }
 }
 
@@ -99,16 +88,9 @@ class BatchHtmlFormatter : HtmlFormatter
                     var target = system.ResolveUri(source.Database, uri);
                     if (target != null)
                     {
-                        if (target.Database == source.Database)
-                        {
-                            return string.Format("T{0:X4}.html", target.TopicIndex);
-                        }
-                        else
-                        {
-                            return string.Format("../{0}/T{1:X4}.html",
-                                GetDatabasePath(target.Database),
-                                target.TopicIndex);
-                        }
+                        return target.Database == source.Database
+                            ? $"T{target.TopicIndex:X4}.html"
+                            : $"../{GetDatabasePath(target.Database)}/T{target.TopicIndex:X4}.html";
                     }
                     else
                     {
@@ -118,7 +100,7 @@ class BatchHtmlFormatter : HtmlFormatter
                 break;
 
             case HelpUriType.LocalTopic:
-                return string.Format("T{0:X4}.html", uri.TopicIndex);
+                return $"T{uri.TopicIndex:X4}.html";
 
             case HelpUriType.Command:
             case HelpUriType.File:
@@ -130,10 +112,7 @@ class BatchHtmlFormatter : HtmlFormatter
         return "?" + uri.ToString();
     }
 
-    static string GetDatabasePath(HelpDatabase database)
-    {
-        var path = database.Name.Replace('.', '_');
-        Directory.CreateDirectory(path);
-        return path;
-    }
+    static string GetDatabasePath(HelpDatabase database) 
+        => PathUtils.EnsureDirectory(database.Name.Replace('.', '_'));
+
 }

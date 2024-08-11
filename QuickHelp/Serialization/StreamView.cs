@@ -7,7 +7,7 @@ namespace QuickHelp.Serialization;
 /// Represents a view on an underlying base stream with different position
 /// and length.
 /// </summary>
-class StreamView : Stream
+public class StreamView : Stream
 {
     private readonly Stream stream;
     private readonly long length;
@@ -23,8 +23,7 @@ class StreamView : Stream
     /// </summary>
     public StreamView(Stream baseStream, long length, long position)
     {
-        if (length < 0)
-            throw new ArgumentOutOfRangeException(nameof(length));
+        ArgumentOutOfRangeException.ThrowIfNegative(length);
         if (!(position >= 0 && position <= length))
             throw new ArgumentOutOfRangeException(nameof(position));
 
@@ -37,8 +36,7 @@ class StreamView : Stream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (buffer == null)
-            throw new ArgumentNullException(nameof(buffer));
+        ArgumentNullException.ThrowIfNull(buffer);
         if (!(offset >= 0 && offset <= buffer.Length))
             throw new ArgumentOutOfRangeException(nameof(offset));
         if (!(count >= 0 && offset + count <= buffer.Length))

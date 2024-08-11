@@ -18,8 +18,7 @@ sealed class HuffmanStream : Stream
 
     public HuffmanStream(Stream baseStream, HuffmanTree huffmanTree)
     {
-        if (baseStream == null)
-            throw new ArgumentNullException(nameof(baseStream));
+        ArgumentNullException.ThrowIfNull(baseStream);
         this.bitStream = new BitStream(baseStream);
         this.huffmanTree = huffmanTree ?? throw new ArgumentNullException(nameof(huffmanTree));
     }
@@ -28,7 +27,7 @@ sealed class HuffmanStream : Stream
 
     public override int ReadByte()
     {
-        HuffmanDecoder decoder = new HuffmanDecoder(this.huffmanTree);
+        var decoder = new HuffmanDecoder(this.huffmanTree);
         while (!decoder.HasValue)
         {
             int bit = bitStream.ReadByte();

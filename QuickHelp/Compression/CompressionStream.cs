@@ -23,10 +23,8 @@ class CompressionStream : Stream
 
     public CompressionStream(Stream baseStream, byte[][] dictionary)
     {
-        if (baseStream == null)
-            throw new ArgumentNullException(nameof(baseStream));
-        if (dictionary == null)
-            dictionary = [];
+        ArgumentNullException.ThrowIfNull(baseStream);
+        dictionary ??= [];
 
         this.stream = baseStream;
         this.dictionary = dictionary;
@@ -60,32 +58,32 @@ class CompressionStream : Stream
             }
             else if (b == 0x1A) // 0x1A, ESCAPE-BYTE
             {
-                byte escapeByte = ReadArgumentByte();
+                var escapeByte = ReadArgumentByte();
                 buffer[bufferEnd++] = escapeByte;
             }
             else if (b == 0x19) // 0x19, REPEAT-BYTE, REPEAT-COUNT
             {
-                byte repeatByte = ReadArgumentByte();
-                byte repeatCount = ReadArgumentByte();
+                var repeatByte = ReadArgumentByte();
+                var repeatCount = ReadArgumentByte();
                 for (int i = 0; i < repeatCount; i++)
                     buffer[bufferEnd++] = repeatByte;
             }
             else if (b == 0x18) // 0x18, SPACE-COUNT
             {
-                byte spaceCount = ReadArgumentByte();
+                var spaceCount = ReadArgumentByte();
                 for (int i = 0; i < spaceCount; i++)
                     buffer[bufferEnd++] = 0x20;
             }
             else // dictionary entry index
             {
-                byte dictIndexLowByte = ReadArgumentByte();
+                var dictIndexLowByte = ReadArgumentByte();
                 int dictIndex = ((b & 3) << 8) | dictIndexLowByte;
                 if (dictIndex >= dictionary.Length)
                 {
                     throw new InvalidDataException("Dictionary index is out of range.");
                 }
 
-                byte[] dictEntry = dictionary[dictIndex];
+                var dictEntry = dictionary[dictIndex];
                 Array.Copy(dictEntry, 0, buffer, bufferEnd, dictEntry.Length);
                 bufferEnd += dictEntry.Length;
 

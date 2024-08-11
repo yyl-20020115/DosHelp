@@ -79,7 +79,7 @@ public abstract class HtmlFormatter
 
     private static HelpLine FixLine(HelpLine line)
     {
-        TextAttribute[] attributes = new TextAttribute[line.Length];
+        var attributes = new TextAttribute[line.Length];
         for (int i = 0; i < line.Length; i++)
         {
             if (line.Text[i] == '►' &&
@@ -98,25 +98,25 @@ public abstract class HtmlFormatter
 
     private int FormatLineSegment(StringBuilder html, HelpTopic topic, HelpLine line, int startIndex)
     {
-        HelpUri link = line.Attributes[startIndex].Link;
+        var link = line.Attributes[startIndex].Link;
         if (link != null)
         {
             html.AppendFormat("<a href=\"{0}\">", FormatUri(topic, link));
         }
 
-        Stack<TextStyle> openTags = new Stack<TextStyle>();
+        var openTags = new Stack<TextStyle>();
         int index = startIndex;
         while (index < line.Length && line.Attributes[index].Link == link)
         {
-            TextAttribute oldAttrs = (index == startIndex) ?
+            var oldAttrs = (index == startIndex) ?
                 TextAttribute.Default : line.Attributes[index - 1];
-            TextAttribute newAttrs = line.Attributes[index];
-            TextStyle stylesToAdd = newAttrs.Style & ~oldAttrs.Style;
-            TextStyle stylesToRemove = oldAttrs.Style & ~newAttrs.Style;
+            var newAttrs = line.Attributes[index];
+            var stylesToAdd = newAttrs.Style & ~oldAttrs.Style;
+            var stylesToRemove = oldAttrs.Style & ~newAttrs.Style;
 
             while (stylesToRemove != TextStyle.None)
             {
-                TextStyle top = openTags.Pop();
+                var top = openTags.Pop();
                 FormatRemovedStyles(html, top);
                 if ((stylesToRemove & top) != 0)
                 {

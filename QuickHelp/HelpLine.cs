@@ -15,10 +15,8 @@ public class HelpLine
 
     public HelpLine(string text, TextAttribute[] attributes)
     {
-        if (text == null)
-            throw new ArgumentNullException(nameof(text));
-        if (attributes == null)
-            throw new ArgumentNullException(nameof(attributes));
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(attributes);
         if (text.Length != attributes.Length)
             throw new ArgumentException("text and attributes must have the same length.");
 
@@ -69,12 +67,11 @@ public readonly struct TextAttribute(TextStyle style, HelpUri link)
 {
     readonly TextStyle style = style;
     readonly HelpUri link = link;
-
     public TextStyle Style => style;
-
     public HelpUri Link => link;
 
-    public override readonly string ToString() => link == null ? style.ToString() : style.ToString() + "; " + link.ToString();
+    public override readonly string ToString()
+        => link == null ? style.ToString() : style.ToString() + "; " + link.ToString();
 
     public static readonly TextAttribute Default = new();
 }
@@ -116,5 +113,5 @@ public class HelpLineBuilder(int capacity)
         }
     }
 
-    public HelpLine ToLine() => new HelpLine(textBuilder.ToString(), attrBuilder.ToArray());
+    public HelpLine ToLine() => new(textBuilder.ToString(), [.. attrBuilder]);
 }

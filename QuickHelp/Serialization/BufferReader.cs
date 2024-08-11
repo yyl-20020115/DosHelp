@@ -36,14 +36,14 @@ public class BufferReader
 
     public BufferReader(byte[] buffer, int index, int count, Encoding encoding)
     {
-        this.buffer = buffer ?? throw new ArgumentNullException("buffer");
+        this.buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
         if (index < 0 || index > buffer.Length)
-            throw new ArgumentOutOfRangeException("index");
+            throw new ArgumentOutOfRangeException(nameof(index));
         this.index = index;
         if (count < 0 || count > buffer.Length - index)
-            throw new ArgumentOutOfRangeException("count");
+            throw new ArgumentOutOfRangeException(nameof(count));
         this.endIndex = index + count;
-        this.encoding = encoding ?? throw new ArgumentNullException("encoding");
+        this.encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
     }
 
     public bool IsEOF => index >= endIndex;
@@ -65,15 +65,14 @@ public class BufferReader
         if (k == -1)
             throw new EndOfStreamException();
 
-        string s = encoding.GetString(buffer, index, k - index);
+        var s = encoding.GetString(buffer, index, k - index);
         index = k + 1;
         return s;
     }
 
     public string ReadFixedLengthString(int length)
     {
-        if (length < 0)
-            throw new ArgumentOutOfRangeException("length");
+        ArgumentOutOfRangeException.ThrowIfNegative(length);
         if (length > endIndex - index)
             throw new EndOfStreamException();
 
@@ -84,8 +83,7 @@ public class BufferReader
 
     public BufferReader ReadBuffer(int length)
     {
-        if (length < 0)
-            throw new ArgumentOutOfRangeException("length");
+        ArgumentOutOfRangeException.ThrowIfNegative(length);
         if (length > endIndex - index)
             throw new EndOfStreamException();
 

@@ -30,8 +30,7 @@ public class BitStream(Stream stream) : Stream
         get => stream.Position * 8 - available_bits;
         set
         {
-            if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(value));
+            ArgumentOutOfRangeException.ThrowIfNegative(value);
             long bitPosition = value;
             long bytePosition = bitPosition / 8;
             stream.Position = bytePosition;

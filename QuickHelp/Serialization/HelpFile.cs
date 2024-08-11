@@ -2,7 +2,7 @@
 
 namespace QuickHelp.Serialization;
 
-class BinaryHelpFileHeader
+public class BinaryHelpFileHeader
 {
     public UInt16 Version;
     public HelpFileAttributes Attributes;
@@ -27,7 +27,7 @@ class BinaryHelpFileHeader
 }
 
 [Flags]
-enum HelpFileAttributes : ushort
+public enum HelpFileAttributes : ushort
 {
     None = 0,
 

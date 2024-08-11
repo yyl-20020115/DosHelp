@@ -10,8 +10,7 @@ public class TextFormatter
 {
     public static string FormatTopic(HelpTopic topic)
     {
-        if (topic == null)
-            throw new ArgumentNullException(nameof(topic));
+        ArgumentNullException.ThrowIfNull(topic);
 
         var builder = new StringBuilder();
         foreach (var line in topic.Lines)

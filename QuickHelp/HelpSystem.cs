@@ -42,46 +42,52 @@ public class HelpSystem
     /// </returns>
     public HelpTopic ResolveUri(HelpDatabase referrer, HelpUri uri)
     {
-        if (uri == null)
-            throw new ArgumentNullException(nameof(uri));
+        ArgumentNullException.ThrowIfNull(uri);
 
-        HelpUriType uriType = uri.Type;
-        if (uriType == HelpUriType.LocalTopic)
+        var uriType = uri.Type;
+        switch (uriType)
         {
-            if (referrer != null)
-            {
-                int topicIndex = uri.TopicIndex;
-                if (topicIndex >= 0 && topicIndex < referrer.Topics.Count)
-                    return referrer.Topics[topicIndex];
-            }
-        }
-        else if (uriType == HelpUriType.GlobalContext)
-        {
-            var dbName = uri.DatabaseName;
-            var db = FindDatabase(dbName);
-            if (db != null)
-                return db.ResolveContext(uri.ContextString);
-        }
-        else if (uriType == HelpUriType.LocalContext)
-        {
-            if (referrer != null)
-                return referrer.ResolveContext(uri.ContextString);
-        }
-        else if (uriType == HelpUriType.Context)
-        {
-            if (referrer != null)
-            {
-                var topic = referrer.ResolveContext(uri.ContextString);
-                if (topic != null)
-                    return topic;
-            }
-            foreach (var db in Databases)
-            {
-                var topic = db.ResolveContext(uri.ContextString);
-                if (topic != null)
-                    return topic;
-            }
-            return null;
+            case HelpUriType.LocalTopic:
+                {
+                    if (referrer != null)
+                    {
+                        int topicIndex = uri.TopicIndex;
+                        if (topicIndex >= 0 && topicIndex < referrer.Topics.Count)
+                            return referrer.Topics[topicIndex];
+                    }
+
+                    break;
+                }
+
+            case HelpUriType.GlobalContext:
+                {
+                    var dbName = uri.DatabaseName;
+                    var db = FindDatabase(dbName);
+                    if (db != null)
+                        return db.ResolveContext(uri.ContextString);
+                    break;
+                }
+
+            case HelpUriType.LocalContext:
+                if (referrer != null)
+                    return referrer.ResolveContext(uri.ContextString);
+                break;
+            case HelpUriType.Context:
+                {
+                    if (referrer != null)
+                    {
+                        var topic = referrer.ResolveContext(uri.ContextString);
+                        if (topic != null)
+                            return topic;
+                    }
+                    foreach (var db in Databases)
+                    {
+                        var topic = db.ResolveContext(uri.ContextString);
+                        if (topic != null)
+                            return topic;
+                    }
+                    return null;
+                }
         }
         return null;
     }

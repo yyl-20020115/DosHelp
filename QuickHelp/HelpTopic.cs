@@ -131,10 +131,7 @@ public class HelpTopic
     /// Gets the collection of references for the topic. Each reference
     /// is represented by a context string.
     /// </summary>
-    public List<string> References
-    {
-        get { return m_references; }
-    }
+    public List<string> References => m_references;
 }
 
 /// <summary>
