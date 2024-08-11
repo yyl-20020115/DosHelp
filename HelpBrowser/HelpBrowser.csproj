@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AssemblyName>785</AssemblyName>
+    <AssemblyName>HelpBrowser</AssemblyName>
     <LangVersion>Preview</LangVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>

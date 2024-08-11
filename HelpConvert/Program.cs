@@ -10,7 +10,10 @@ namespace HelpConvert;
 public class Program
 {
     public static int Main(string[] args) 
-        => args.Length == 0 ? PrintUsage() : Convert(args, false);
+        => args.Length == 0 
+        ? PrintUsage() 
+        : Convert(args, false)
+        ;
 
     static int PrintUsage()
     {
