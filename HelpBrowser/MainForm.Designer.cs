@@ -28,419 +28,412 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.lstTopics = new System.Windows.Forms.ListBox();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.txtSource = new System.Windows.Forms.TextBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabTopics = new System.Windows.Forms.TabPage();
-            this.tabContexts = new System.Windows.Forms.TabPage();
-            this.lstContexts = new System.Windows.Forms.ListBox();
-            this.tabErrors = new System.Windows.Forms.TabPage();
-            this.lstErrors = new System.Windows.Forms.ListBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cbDatabases = new System.Windows.Forms.ComboBox();
-            this.btnAddArchive = new System.Windows.Forms.Button();
-            this.btnRemoveArchive = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabHtml = new System.Windows.Forms.TabPage();
-            this.txtTopicTitle = new System.Windows.Forms.TextBox();
-            this.tabText = new System.Windows.Forms.TabPage();
-            this.txtNoFormat = new System.Windows.Forms.TextBox();
-            this.tabSource = new System.Windows.Forms.TabPage();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuViewUnresolvedLinks = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuViewErrors = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.tabControl2.SuspendLayout();
-            this.tabTopics.SuspendLayout();
-            this.tabContexts.SuspendLayout();
-            this.tabErrors.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabHtml.SuspendLayout();
-            this.tabText.SuspendLayout();
-            this.tabSource.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            lstTopics = new System.Windows.Forms.ListBox();
+            webBrowserReading = new System.Windows.Forms.WebBrowser();
+            txtSource = new System.Windows.Forms.TextBox();
+            splitContainerMain = new System.Windows.Forms.SplitContainer();
+            tabControlIndices = new System.Windows.Forms.TabControl();
+            tabTopics = new System.Windows.Forms.TabPage();
+            tabContexts = new System.Windows.Forms.TabPage();
+            lstContexts = new System.Windows.Forms.ListBox();
+            tabErrors = new System.Windows.Forms.TabPage();
+            lstErrors = new System.Windows.Forms.ListBox();
+            panel1 = new System.Windows.Forms.Panel();
+            cbDatabases = new System.Windows.Forms.ComboBox();
+            btnAddArchive = new System.Windows.Forms.Button();
+            btnRemoveArchive = new System.Windows.Forms.Button();
+            tabControlReading = new System.Windows.Forms.TabControl();
+            tabHtml = new System.Windows.Forms.TabPage();
+            txtTopicTitle = new System.Windows.Forms.TextBox();
+            tabText = new System.Windows.Forms.TabPage();
+            txtNoFormat = new System.Windows.Forms.TextBox();
+            tabSource = new System.Windows.Forms.TabPage();
+            menuStripMain = new System.Windows.Forms.MenuStrip();
+            mnuFile = new System.Windows.Forms.ToolStripMenuItem();
+            mnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            mnuViewUnresolvedLinks = new System.Windows.Forms.ToolStripMenuItem();
+            mnuViewErrors = new System.Windows.Forms.ToolStripMenuItem();
+            openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            ((System.ComponentModel.ISupportInitialize)splitContainerMain).BeginInit();
+            splitContainerMain.Panel1.SuspendLayout();
+            splitContainerMain.Panel2.SuspendLayout();
+            splitContainerMain.SuspendLayout();
+            tabControlIndices.SuspendLayout();
+            tabTopics.SuspendLayout();
+            tabContexts.SuspendLayout();
+            tabErrors.SuspendLayout();
+            panel1.SuspendLayout();
+            tabControlReading.SuspendLayout();
+            tabHtml.SuspendLayout();
+            tabText.SuspendLayout();
+            tabSource.SuspendLayout();
+            menuStripMain.SuspendLayout();
+            SuspendLayout();
             // 
             // lstTopics
             // 
-            this.lstTopics.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstTopics.FormattingEnabled = true;
-            this.lstTopics.HorizontalScrollbar = true;
-            this.lstTopics.ItemHeight = 15;
-            this.lstTopics.Location = new System.Drawing.Point(3, 3);
-            this.lstTopics.Margin = new System.Windows.Forms.Padding(4);
-            this.lstTopics.Name = "lstTopics";
-            this.lstTopics.Size = new System.Drawing.Size(227, 293);
-            this.lstTopics.TabIndex = 0;
-            this.lstTopics.SelectedIndexChanged += new System.EventHandler(this.lstTopics_SelectedIndexChanged);
+            lstTopics.Dock = System.Windows.Forms.DockStyle.Fill;
+            lstTopics.FormattingEnabled = true;
+            lstTopics.HorizontalScrollbar = true;
+            lstTopics.ItemHeight = 15;
+            lstTopics.Location = new System.Drawing.Point(3, 3);
+            lstTopics.Margin = new System.Windows.Forms.Padding(4);
+            lstTopics.Name = "lstTopics";
+            lstTopics.Size = new System.Drawing.Size(227, 292);
+            lstTopics.TabIndex = 0;
+            lstTopics.SelectedIndexChanged += lstTopics_SelectedIndexChanged;
             // 
-            // webBrowser1
+            // webBrowserReading
             // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 23);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(481, 299);
-            this.webBrowser1.TabIndex = 1;
-            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
+            webBrowserReading.Dock = System.Windows.Forms.DockStyle.Fill;
+            webBrowserReading.Location = new System.Drawing.Point(0, 23);
+            webBrowserReading.MinimumSize = new System.Drawing.Size(20, 20);
+            webBrowserReading.Name = "webBrowserReading";
+            webBrowserReading.Size = new System.Drawing.Size(481, 298);
+            webBrowserReading.TabIndex = 1;
+            webBrowserReading.Navigating += webBrowser1_Navigating;
             // 
             // txtSource
             // 
-            this.txtSource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtSource.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSource.Location = new System.Drawing.Point(3, 3);
-            this.txtSource.Multiline = true;
-            this.txtSource.Name = "txtSource";
-            this.txtSource.ReadOnly = true;
-            this.txtSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtSource.Size = new System.Drawing.Size(475, 318);
-            this.txtSource.TabIndex = 2;
-            this.txtSource.WordWrap = false;
+            txtSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            txtSource.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            txtSource.Location = new System.Drawing.Point(3, 3);
+            txtSource.Multiline = true;
+            txtSource.Name = "txtSource";
+            txtSource.ReadOnly = true;
+            txtSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            txtSource.Size = new System.Drawing.Size(475, 313);
+            txtSource.TabIndex = 2;
+            txtSource.WordWrap = false;
             // 
-            // splitContainer1
+            // splitContainerMain
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainerMain.Location = new System.Drawing.Point(0, 25);
+            splitContainerMain.Name = "splitContainerMain";
             // 
-            // splitContainer1.Panel1
+            // splitContainerMain.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl2);
-            this.splitContainer1.Panel1.Controls.Add(this.panel1);
+            splitContainerMain.Panel1.Controls.Add(tabControlIndices);
+            splitContainerMain.Panel1.Controls.Add(panel1);
             // 
-            // splitContainer1.Panel2
+            // splitContainerMain.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(734, 350);
-            this.splitContainer1.SplitterDistance = 241;
-            this.splitContainer1.TabIndex = 4;
+            splitContainerMain.Panel2.Controls.Add(tabControlReading);
+            splitContainerMain.Size = new System.Drawing.Size(734, 349);
+            splitContainerMain.SplitterDistance = 241;
+            splitContainerMain.TabIndex = 4;
             // 
-            // tabControl2
+            // tabControlIndices
             // 
-            this.tabControl2.Controls.Add(this.tabTopics);
-            this.tabControl2.Controls.Add(this.tabContexts);
-            this.tabControl2.Controls.Add(this.tabErrors);
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 23);
-            this.tabControl2.Multiline = true;
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(241, 327);
-            this.tabControl2.TabIndex = 1;
+            tabControlIndices.Controls.Add(tabTopics);
+            tabControlIndices.Controls.Add(tabContexts);
+            tabControlIndices.Controls.Add(tabErrors);
+            tabControlIndices.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabControlIndices.Location = new System.Drawing.Point(0, 23);
+            tabControlIndices.Multiline = true;
+            tabControlIndices.Name = "tabControlIndices";
+            tabControlIndices.SelectedIndex = 0;
+            tabControlIndices.Size = new System.Drawing.Size(241, 326);
+            tabControlIndices.TabIndex = 1;
             // 
             // tabTopics
             // 
-            this.tabTopics.Controls.Add(this.lstTopics);
-            this.tabTopics.Location = new System.Drawing.Point(4, 24);
-            this.tabTopics.Name = "tabTopics";
-            this.tabTopics.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTopics.Size = new System.Drawing.Size(233, 299);
-            this.tabTopics.TabIndex = 0;
-            this.tabTopics.Text = "Topics";
-            this.tabTopics.UseVisualStyleBackColor = true;
+            tabTopics.Controls.Add(lstTopics);
+            tabTopics.Location = new System.Drawing.Point(4, 24);
+            tabTopics.Name = "tabTopics";
+            tabTopics.Padding = new System.Windows.Forms.Padding(3);
+            tabTopics.Size = new System.Drawing.Size(233, 298);
+            tabTopics.TabIndex = 0;
+            tabTopics.Text = "Topics";
+            tabTopics.UseVisualStyleBackColor = true;
             // 
             // tabContexts
             // 
-            this.tabContexts.Controls.Add(this.lstContexts);
-            this.tabContexts.Location = new System.Drawing.Point(4, 22);
-            this.tabContexts.Name = "tabContexts";
-            this.tabContexts.Padding = new System.Windows.Forms.Padding(3);
-            this.tabContexts.Size = new System.Drawing.Size(233, 303);
-            this.tabContexts.TabIndex = 1;
-            this.tabContexts.Text = "Contexts";
-            this.tabContexts.UseVisualStyleBackColor = true;
+            tabContexts.Controls.Add(lstContexts);
+            tabContexts.Location = new System.Drawing.Point(4, 26);
+            tabContexts.Name = "tabContexts";
+            tabContexts.Padding = new System.Windows.Forms.Padding(3);
+            tabContexts.Size = new System.Drawing.Size(233, 296);
+            tabContexts.TabIndex = 1;
+            tabContexts.Text = "Contexts";
+            tabContexts.UseVisualStyleBackColor = true;
             // 
             // lstContexts
             // 
-            this.lstContexts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstContexts.FormattingEnabled = true;
-            this.lstContexts.ItemHeight = 15;
-            this.lstContexts.Location = new System.Drawing.Point(3, 3);
-            this.lstContexts.Name = "lstContexts";
-            this.lstContexts.Size = new System.Drawing.Size(227, 297);
-            this.lstContexts.TabIndex = 0;
-            this.lstContexts.SelectedIndexChanged += new System.EventHandler(this.lstContexts_SelectedIndexChanged);
+            lstContexts.Dock = System.Windows.Forms.DockStyle.Fill;
+            lstContexts.FormattingEnabled = true;
+            lstContexts.ItemHeight = 15;
+            lstContexts.Location = new System.Drawing.Point(3, 3);
+            lstContexts.Name = "lstContexts";
+            lstContexts.Size = new System.Drawing.Size(227, 290);
+            lstContexts.TabIndex = 0;
+            lstContexts.SelectedIndexChanged += lstContexts_SelectedIndexChanged;
             // 
             // tabErrors
             // 
-            this.tabErrors.Controls.Add(this.lstErrors);
-            this.tabErrors.Location = new System.Drawing.Point(4, 22);
-            this.tabErrors.Name = "tabErrors";
-            this.tabErrors.Size = new System.Drawing.Size(233, 303);
-            this.tabErrors.TabIndex = 2;
-            this.tabErrors.Text = "Errors";
-            this.tabErrors.UseVisualStyleBackColor = true;
+            tabErrors.Controls.Add(lstErrors);
+            tabErrors.Location = new System.Drawing.Point(4, 26);
+            tabErrors.Name = "tabErrors";
+            tabErrors.Size = new System.Drawing.Size(233, 296);
+            tabErrors.TabIndex = 2;
+            tabErrors.Text = "Errors";
+            tabErrors.UseVisualStyleBackColor = true;
             // 
             // lstErrors
             // 
-            this.lstErrors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstErrors.FormattingEnabled = true;
-            this.lstErrors.ItemHeight = 15;
-            this.lstErrors.Location = new System.Drawing.Point(0, 0);
-            this.lstErrors.Name = "lstErrors";
-            this.lstErrors.Size = new System.Drawing.Size(233, 303);
-            this.lstErrors.TabIndex = 0;
-            this.lstErrors.SelectedIndexChanged += new System.EventHandler(this.lstErrors_SelectedIndexChanged);
+            lstErrors.Dock = System.Windows.Forms.DockStyle.Fill;
+            lstErrors.FormattingEnabled = true;
+            lstErrors.ItemHeight = 15;
+            lstErrors.Location = new System.Drawing.Point(0, 0);
+            lstErrors.Name = "lstErrors";
+            lstErrors.Size = new System.Drawing.Size(233, 296);
+            lstErrors.TabIndex = 0;
+            lstErrors.SelectedIndexChanged += lstErrors_SelectedIndexChanged;
             // 
             // panel1
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.Controls.Add(this.cbDatabases);
-            this.panel1.Controls.Add(this.btnAddArchive);
-            this.panel1.Controls.Add(this.btnRemoveArchive);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(241, 23);
-            this.panel1.TabIndex = 2;
+            panel1.AutoSize = true;
+            panel1.Controls.Add(cbDatabases);
+            panel1.Controls.Add(btnAddArchive);
+            panel1.Controls.Add(btnRemoveArchive);
+            panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            panel1.Location = new System.Drawing.Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(241, 23);
+            panel1.TabIndex = 2;
             // 
             // cbDatabases
             // 
-            this.cbDatabases.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDatabases.FormattingEnabled = true;
-            this.cbDatabases.Location = new System.Drawing.Point(0, 0);
-            this.cbDatabases.Name = "cbDatabases";
-            this.cbDatabases.Size = new System.Drawing.Size(187, 23);
-            this.cbDatabases.TabIndex = 1;
-            this.cbDatabases.SelectedIndexChanged += new System.EventHandler(this.cbDatabases_SelectedIndexChanged);
+            cbDatabases.Dock = System.Windows.Forms.DockStyle.Top;
+            cbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbDatabases.FormattingEnabled = true;
+            cbDatabases.Location = new System.Drawing.Point(0, 0);
+            cbDatabases.Name = "cbDatabases";
+            cbDatabases.Size = new System.Drawing.Size(187, 23);
+            cbDatabases.TabIndex = 1;
+            cbDatabases.SelectedIndexChanged += cbDatabases_SelectedIndexChanged;
             // 
             // btnAddArchive
             // 
-            this.btnAddArchive.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAddArchive.Location = new System.Drawing.Point(187, 0);
-            this.btnAddArchive.Name = "btnAddArchive";
-            this.btnAddArchive.Size = new System.Drawing.Size(27, 23);
-            this.btnAddArchive.TabIndex = 3;
-            this.btnAddArchive.Text = "+";
-            this.btnAddArchive.UseVisualStyleBackColor = true;
-            this.btnAddArchive.Click += new System.EventHandler(this.btnAddArchive_Click);
+            btnAddArchive.Dock = System.Windows.Forms.DockStyle.Right;
+            btnAddArchive.Location = new System.Drawing.Point(187, 0);
+            btnAddArchive.Name = "btnAddArchive";
+            btnAddArchive.Size = new System.Drawing.Size(27, 23);
+            btnAddArchive.TabIndex = 3;
+            btnAddArchive.Text = "+";
+            btnAddArchive.UseVisualStyleBackColor = true;
+            btnAddArchive.Click += btnAddArchive_Click;
             // 
             // btnRemoveArchive
             // 
-            this.btnRemoveArchive.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnRemoveArchive.Location = new System.Drawing.Point(214, 0);
-            this.btnRemoveArchive.Name = "btnRemoveArchive";
-            this.btnRemoveArchive.Size = new System.Drawing.Size(27, 23);
-            this.btnRemoveArchive.TabIndex = 2;
-            this.btnRemoveArchive.Text = "-";
-            this.btnRemoveArchive.UseVisualStyleBackColor = true;
-            this.btnRemoveArchive.Click += new System.EventHandler(this.btnRemoveArchive_Click);
+            btnRemoveArchive.Dock = System.Windows.Forms.DockStyle.Right;
+            btnRemoveArchive.Location = new System.Drawing.Point(214, 0);
+            btnRemoveArchive.Name = "btnRemoveArchive";
+            btnRemoveArchive.Size = new System.Drawing.Size(27, 23);
+            btnRemoveArchive.TabIndex = 2;
+            btnRemoveArchive.Text = "-";
+            btnRemoveArchive.UseVisualStyleBackColor = true;
+            btnRemoveArchive.Click += btnRemoveArchive_Click;
             // 
-            // tabControl1
+            // tabControlReading
             // 
-            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tabControl1.Controls.Add(this.tabHtml);
-            this.tabControl1.Controls.Add(this.tabText);
-            this.tabControl1.Controls.Add(this.tabSource);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(489, 350);
-            this.tabControl1.TabIndex = 2;
+            tabControlReading.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            tabControlReading.Controls.Add(tabHtml);
+            tabControlReading.Controls.Add(tabText);
+            tabControlReading.Controls.Add(tabSource);
+            tabControlReading.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabControlReading.Location = new System.Drawing.Point(0, 0);
+            tabControlReading.Name = "tabControlReading";
+            tabControlReading.SelectedIndex = 0;
+            tabControlReading.Size = new System.Drawing.Size(489, 349);
+            tabControlReading.TabIndex = 2;
             // 
             // tabHtml
             // 
-            this.tabHtml.Controls.Add(this.webBrowser1);
-            this.tabHtml.Controls.Add(this.txtTopicTitle);
-            this.tabHtml.Location = new System.Drawing.Point(4, 4);
-            this.tabHtml.Name = "tabHtml";
-            this.tabHtml.Size = new System.Drawing.Size(481, 322);
-            this.tabHtml.TabIndex = 0;
-            this.tabHtml.Text = "HTML";
-            this.tabHtml.UseVisualStyleBackColor = true;
+            tabHtml.Controls.Add(webBrowserReading);
+            tabHtml.Controls.Add(txtTopicTitle);
+            tabHtml.Location = new System.Drawing.Point(4, 4);
+            tabHtml.Name = "tabHtml";
+            tabHtml.Size = new System.Drawing.Size(481, 321);
+            tabHtml.TabIndex = 0;
+            tabHtml.Text = "HTML";
+            tabHtml.UseVisualStyleBackColor = true;
             // 
             // txtTopicTitle
             // 
-            this.txtTopicTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTopicTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtTopicTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTopicTitle.Location = new System.Drawing.Point(0, 0);
-            this.txtTopicTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.txtTopicTitle.Name = "txtTopicTitle";
-            this.txtTopicTitle.ReadOnly = true;
-            this.txtTopicTitle.Size = new System.Drawing.Size(481, 23);
-            this.txtTopicTitle.TabIndex = 2;
-            this.txtTopicTitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            txtTopicTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            txtTopicTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            txtTopicTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            txtTopicTitle.Location = new System.Drawing.Point(0, 0);
+            txtTopicTitle.Margin = new System.Windows.Forms.Padding(0);
+            txtTopicTitle.Name = "txtTopicTitle";
+            txtTopicTitle.ReadOnly = true;
+            txtTopicTitle.Size = new System.Drawing.Size(481, 23);
+            txtTopicTitle.TabIndex = 2;
+            txtTopicTitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tabText
             // 
-            this.tabText.Controls.Add(this.txtNoFormat);
-            this.tabText.Location = new System.Drawing.Point(4, 4);
-            this.tabText.Name = "tabText";
-            this.tabText.Size = new System.Drawing.Size(481, 324);
-            this.tabText.TabIndex = 2;
-            this.tabText.Text = "Text";
-            this.tabText.UseVisualStyleBackColor = true;
+            tabText.Controls.Add(txtNoFormat);
+            tabText.Location = new System.Drawing.Point(4, 4);
+            tabText.Name = "tabText";
+            tabText.Size = new System.Drawing.Size(481, 319);
+            tabText.TabIndex = 2;
+            tabText.Text = "Text";
+            tabText.UseVisualStyleBackColor = true;
             // 
             // txtNoFormat
             // 
-            this.txtNoFormat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtNoFormat.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNoFormat.Location = new System.Drawing.Point(0, 0);
-            this.txtNoFormat.Multiline = true;
-            this.txtNoFormat.Name = "txtNoFormat";
-            this.txtNoFormat.ReadOnly = true;
-            this.txtNoFormat.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtNoFormat.Size = new System.Drawing.Size(481, 324);
-            this.txtNoFormat.TabIndex = 0;
-            this.txtNoFormat.WordWrap = false;
+            txtNoFormat.Dock = System.Windows.Forms.DockStyle.Fill;
+            txtNoFormat.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            txtNoFormat.Location = new System.Drawing.Point(0, 0);
+            txtNoFormat.Multiline = true;
+            txtNoFormat.Name = "txtNoFormat";
+            txtNoFormat.ReadOnly = true;
+            txtNoFormat.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            txtNoFormat.Size = new System.Drawing.Size(481, 319);
+            txtNoFormat.TabIndex = 0;
+            txtNoFormat.WordWrap = false;
             // 
             // tabSource
             // 
-            this.tabSource.Controls.Add(this.txtSource);
-            this.tabSource.Location = new System.Drawing.Point(4, 4);
-            this.tabSource.Name = "tabSource";
-            this.tabSource.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSource.Size = new System.Drawing.Size(481, 324);
-            this.tabSource.TabIndex = 1;
-            this.tabSource.Text = "Source";
-            this.tabSource.UseVisualStyleBackColor = true;
+            tabSource.Controls.Add(txtSource);
+            tabSource.Location = new System.Drawing.Point(4, 4);
+            tabSource.Name = "tabSource";
+            tabSource.Padding = new System.Windows.Forms.Padding(3);
+            tabSource.Size = new System.Drawing.Size(481, 319);
+            tabSource.TabIndex = 1;
+            tabSource.Text = "Source";
+            tabSource.UseVisualStyleBackColor = true;
             // 
-            // menuStrip1
+            // menuStripMain
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFile,
-            this.viewToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(734, 24);
-            this.menuStrip1.TabIndex = 5;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuFile, viewToolStripMenuItem });
+            menuStripMain.Location = new System.Drawing.Point(0, 0);
+            menuStripMain.Name = "menuStripMain";
+            menuStripMain.Size = new System.Drawing.Size(734, 25);
+            menuStripMain.TabIndex = 5;
             // 
             // mnuFile
             // 
-            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFileOpen,
-            this.toolStripMenuItem1,
-            this.mnuFileExit});
-            this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(37, 20);
-            this.mnuFile.Text = "&File";
+            mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuFileOpen, toolStripMenuItem1, mnuFileExit });
+            mnuFile.Name = "mnuFile";
+            mnuFile.Size = new System.Drawing.Size(39, 21);
+            mnuFile.Text = "&File";
             // 
             // mnuFileOpen
             // 
-            this.mnuFileOpen.Name = "mnuFileOpen";
-            this.mnuFileOpen.Size = new System.Drawing.Size(112, 22);
-            this.mnuFileOpen.Text = "&Open...";
-            this.mnuFileOpen.Click += new System.EventHandler(this.mnuFileOpen_Click);
+            mnuFileOpen.Name = "mnuFileOpen";
+            mnuFileOpen.Size = new System.Drawing.Size(180, 22);
+            mnuFileOpen.Text = "&Open...";
+            mnuFileOpen.Click += mnuFileOpen_Click;
             // 
             // toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 6);
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuFileExit
             // 
-            this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(112, 22);
-            this.mnuFileExit.Text = "E&xit";
-            this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
+            mnuFileExit.Name = "mnuFileExit";
+            mnuFileExit.Size = new System.Drawing.Size(180, 22);
+            mnuFileExit.Text = "E&xit";
+            mnuFileExit.Click += mnuFileExit_Click;
             // 
             // viewToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuViewUnresolvedLinks,
-            this.mnuViewErrors});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "&View";
+            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuViewUnresolvedLinks, mnuViewErrors });
+            viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            viewToolStripMenuItem.Size = new System.Drawing.Size(47, 21);
+            viewToolStripMenuItem.Text = "&View";
             // 
             // mnuViewUnresolvedLinks
             // 
-            this.mnuViewUnresolvedLinks.Name = "mnuViewUnresolvedLinks";
-            this.mnuViewUnresolvedLinks.Size = new System.Drawing.Size(172, 22);
-            this.mnuViewUnresolvedLinks.Text = "&Unresolved Links...";
-            this.mnuViewUnresolvedLinks.Click += new System.EventHandler(this.mnuViewUnresolvedLinks_Click);
+            mnuViewUnresolvedLinks.Name = "mnuViewUnresolvedLinks";
+            mnuViewUnresolvedLinks.Size = new System.Drawing.Size(184, 22);
+            mnuViewUnresolvedLinks.Text = "&Unresolved Links...";
+            mnuViewUnresolvedLinks.Click += mnuViewUnresolvedLinks_Click;
             // 
             // mnuViewErrors
             // 
-            this.mnuViewErrors.Name = "mnuViewErrors";
-            this.mnuViewErrors.Size = new System.Drawing.Size(172, 22);
-            this.mnuViewErrors.Text = "&Errors...";
-            this.mnuViewErrors.Click += new System.EventHandler(this.mnuViewErrors_Click);
+            mnuViewErrors.Name = "mnuViewErrors";
+            mnuViewErrors.Size = new System.Drawing.Size(184, 22);
+            mnuViewErrors.Text = "&Errors...";
+            mnuViewErrors.Click += mnuViewErrors_Click;
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.Filter = "DOS help files|*.hlp|QuickHelp markup source|*.txt";
-            this.openFileDialog1.Multiselect = true;
-            this.openFileDialog1.Title = "Open DOS Help Files";
+            openFileDialog1.Filter = "DOS help files|*.hlp|QuickHelp markup source|*.txt";
+            openFileDialog1.Multiselect = true;
+            openFileDialog1.Title = "Open DOS Help Files";
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 374);
-            this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.menuStrip1);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "MainForm";
-            this.Text = "DOS Help Viewer";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
-            this.tabTopics.ResumeLayout(false);
-            this.tabContexts.ResumeLayout(false);
-            this.tabErrors.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabHtml.ResumeLayout(false);
-            this.tabHtml.PerformLayout();
-            this.tabText.ResumeLayout(false);
-            this.tabText.PerformLayout();
-            this.tabSource.ResumeLayout(false);
-            this.tabSource.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(734, 374);
+            Controls.Add(splitContainerMain);
+            Controls.Add(menuStripMain);
+            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStripMain;
+            Margin = new System.Windows.Forms.Padding(4);
+            Name = "MainForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "DOS Help Viewer";
+            FormClosed += MainForm_FormClosed;
+            Load += MainForm_Load;
+            splitContainerMain.Panel1.ResumeLayout(false);
+            splitContainerMain.Panel1.PerformLayout();
+            splitContainerMain.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainerMain).EndInit();
+            splitContainerMain.ResumeLayout(false);
+            tabControlIndices.ResumeLayout(false);
+            tabTopics.ResumeLayout(false);
+            tabContexts.ResumeLayout(false);
+            tabErrors.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            tabControlReading.ResumeLayout(false);
+            tabHtml.ResumeLayout(false);
+            tabHtml.PerformLayout();
+            tabText.ResumeLayout(false);
+            tabText.PerformLayout();
+            tabSource.ResumeLayout(false);
+            tabSource.PerformLayout();
+            menuStripMain.ResumeLayout(false);
+            menuStripMain.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.ListBox lstTopics;
-        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.WebBrowser webBrowserReading;
         private System.Windows.Forms.TextBox txtSource;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.SplitContainer splitContainerMain;
+        private System.Windows.Forms.TabControl tabControlReading;
         private System.Windows.Forms.TabPage tabHtml;
         private System.Windows.Forms.TabPage tabSource;
         private System.Windows.Forms.TextBox txtNoFormat;
-        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabControl tabControlIndices;
         private System.Windows.Forms.TabPage tabTopics;
         private System.Windows.Forms.TabPage tabContexts;
         private System.Windows.Forms.ListBox lstContexts;
         private System.Windows.Forms.TabPage tabText;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStripMain;
         private System.Windows.Forms.ToolStripMenuItem mnuFile;
         private System.Windows.Forms.ToolStripMenuItem mnuFileOpen;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;

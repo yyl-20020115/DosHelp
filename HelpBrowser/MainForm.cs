@@ -120,7 +120,7 @@ public partial class MainForm : Form
         var html = formatter.FormatTopic(topic);
         var text = TextFormatter.FormatTopic(topic);
         txtNoFormat.Text = text;
-        webBrowser1.DocumentText = html;
+        webBrowserReading.DocumentText = html;
         txtTopicTitle.Text = HelpTopicViewItem.GetTopicDisplayTitle(topic);
         if (topic.Source is string)
             txtSource.Text = (string)topic.Source;
