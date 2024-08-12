@@ -1,0 +1,32 @@
+﻿<html>
+  <head>
+    <title>FRE Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="?!B">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the amount (in bytes) of available or unused memory.
+
+<b>FRE(numeric-expression)</b>
+<b>FRE(stringexpression$)</b>
+
+    ■ <b>numeric-expression</b>    A value that specifies the type of memory:
+
+                            Value               FRE returns
+                            ════════════════    ═════════════════════════════
+                            -1                  The size of the largest array
+                                                (nonstring) you can create
+                            -2                  The unused stack space
+                            Any other number    The available string space
+
+    ■ <b>stringexpression$</b>     Any string expression. FRE compacts the free
+                            string space into a single block, then returns
+                            the amount of available string space.
+
+Example:
+    PRINT &quot;String Space&quot;, FRE(&quot;&quot;)
+    PRINT &quot;Unused Stack Space&quot;, FRE(-2)
+    PRINT &quot;Array Space&quot;, FRE(-1)</pre>
+  </body>
+</html>

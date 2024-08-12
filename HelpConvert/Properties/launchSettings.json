@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "HelpConvert": {
+      "commandName": "Project",
+      "commandLineArgs": "Qbasic.hlp",
+      "workingDirectory": "..\\HelpBrowser\\Files"
+    }
+  }
+}

@@ -46,7 +46,7 @@ public class Program
                 foreach (var topic in database.Topics)
                 {
                     var html = converter.FormatTopic(topic);
-                    var htmlFileName = Path.Combine(htmlPath, string.Format("T{0:X4}.html", topicIndex));
+                    var htmlFileName = Path.Combine(htmlPath, $"T{topicIndex:X4}.html");
                     if (!isDryRun)
                     {
                         using var writer = new StreamWriter(htmlFileName, false, Encoding.UTF8);
