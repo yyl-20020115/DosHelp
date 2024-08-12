@@ -29,7 +29,8 @@ partial class MainForm
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        System.ComponentModel.ComponentResourceManager resources 
+            = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         splitContainerMain = new System.Windows.Forms.SplitContainer();
         tabControlIndices = new System.Windows.Forms.TabControl();
         tabTopics = new System.Windows.Forms.TabPage();
@@ -267,13 +268,13 @@ partial class MainForm
         // 
         mnuViewUnresolvedLinks.Name = "mnuViewUnresolvedLinks";
         resources.ApplyResources(mnuViewUnresolvedLinks, "mnuViewUnresolvedLinks");
-        mnuViewUnresolvedLinks.Click += mnuViewUnresolvedLinks_Click;
+        mnuViewUnresolvedLinks.Click += MnuViewUnresolvedLinks_Click;
         // 
         // mnuViewErrors
         // 
         mnuViewErrors.Name = "mnuViewErrors";
         resources.ApplyResources(mnuViewErrors, "mnuViewErrors");
-        mnuViewErrors.Click += mnuViewErrors_Click;
+        mnuViewErrors.Click += MnuViewErrors_Click;
         // 
         // openFileDialog1
         // 

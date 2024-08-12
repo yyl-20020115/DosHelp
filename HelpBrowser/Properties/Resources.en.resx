@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CanNotDecode" xml:space="preserve">
-    <value>无法解码数据库文件</value>
+    <value>Can not decode database file</value>
   </data>
   <data name="CanNotResolveLink" xml:space="preserve">
-    <value>无法解析链接</value>
+    <value>Can not resolve link</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>错误</value>
+    <value>Error</value>
   </data>
   <data name="ErrorsCount" xml:space="preserve">
-    <value>存在 {0} 个错误.</value>
+    <value>There are {0} errors.</value>
   </data>
   <data name="Redirect" xml:space="preserve">
-    <value>重定向</value>
+    <value>Redirect</value>
   </data>
   <data name="RedirectTo" xml:space="preserve">
-    <value>重定向到</value>
+    <value>Redirect to</value>
   </data>
   <data name="UnnamedDatabase" xml:space="preserve">
-    <value>(未命名数据库)</value>
+    <value>(unnamed database)</value>
   </data>
   <data name="UntitledTopic" xml:space="preserve">
-    <value>(无标题的主题)</value>
+    <value>(Untitled Topic)</value>
   </data>
 </root>

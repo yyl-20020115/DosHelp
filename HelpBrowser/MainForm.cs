@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 using QuickHelp;
@@ -11,12 +12,15 @@ namespace HelpBrowser;
 
 public partial class MainForm : Form
 {
-    private readonly HelpViewModel viewModel = new();
-
+    private const char P_Command = 'P';
+    private const string URL_AboutBlank = "about:blank?";
+    private readonly HelpViewModel viewModel;
+    public readonly ResourceManager Manager = new(typeof(MainForm));
     public MainForm()
     {
         InitializeComponent();
 
+        this.viewModel = new(this);
         viewModel.DatabaseAdded += OnDatabasesChanged;
         viewModel.DatabaseRemoved += OnDatabasesChanged;
         viewModel.ActiveDatabaseChanged += OnActiveDatabaseChanged;
@@ -39,7 +43,7 @@ public partial class MainForm : Form
         cbDatabases.Items.Clear();
         foreach (var database in viewModel.Databases)
         {
-            cbDatabases.Items.Add(new HelpDatabaseViewItem(database));
+            cbDatabases.Items.Add(new HelpDatabaseViewItem(this, database));
             if (database == viewModel.ActiveDatabase)
                 cbDatabases.SelectedIndex = cbDatabases.Items.Count - 1;
         }
@@ -63,9 +67,9 @@ public partial class MainForm : Form
 
         if (viewModel.ActiveDatabase == null)
         {
-            tabTopics.Text = "Topics";
-            tabContexts.Text = "Contexts";
-            tabErrors.Text = "Errors";
+            tabTopics.Text = this.Manager.GetString($"{tabTopics.Name}.Text");// "Topics";
+            tabContexts.Text = this.Manager.GetString($"{tabContexts.Name}.Text");// "Contexts";
+            tabErrors.Text = this.Manager.GetString($"{tabErrors.Name}.Text"); //"Errors"
             return;
         }
 
@@ -78,13 +82,13 @@ public partial class MainForm : Form
             topicIndex++;
         }
         lstTopics.Visible = true;
-        tabTopics.Text = string.Format("Topics ({0})", lstTopics.Items.Count);
+        tabTopics.Text = $"{this.Manager.GetString($"{tabTopics.Name}.Text")} ({lstTopics.Items.Count})";
 
         foreach (var contextString in viewModel.ActiveDatabase.ContextStrings)
         {
             lstContexts.Items.Add(contextString);
         }
-        tabContexts.Text = string.Format("Contexts ({0})", lstContexts.Items.Count);
+        tabContexts.Text = $"{this.Manager.GetString($"{tabContexts.Name}.Text")} ({lstContexts.Items.Count})";
 
         foreach (var error in viewModel.DeserializationErrors)
         {
@@ -93,7 +97,7 @@ public partial class MainForm : Form
                 lstErrors.Items.Add(new HelpTopicErrorViewItem(error));
             }
         }
-        tabErrors.Text = string.Format("Errors ({0})", lstErrors.Items.Count);
+        tabErrors.Text = $"{this.Manager.GetString($"{tabErrors.Name}.Text")} ({lstErrors.Items.Count})";
     }
 
     private void OnActiveTopicChanged(object sender, EventArgs e)
@@ -121,18 +125,18 @@ public partial class MainForm : Form
         var text = TextFormatter.FormatTopic(topic);
         txtNoFormat.Text = text;
         webBrowserReading.DocumentText = html;
-        txtTopicTitle.Text = HelpTopicViewItem.GetTopicDisplayTitle(topic);
+        txtTopicTitle.Text = HelpTopicViewItem.GetTopicDisplayTitle(topic) ?? this.Manager.GetString("UntitledTopic");
         txtSource.Text = topic.Source is string _text ? _text : topic.Source is byte[] bytes ? FormatHexData(bytes) : "";
 
         // Special handling for commands.
         if (topic.IsHidden && !string.IsNullOrEmpty(topic.ExecuteCommand))
         {
-            if (topic.ExecuteCommand[0] == 'P')
+            if (topic.ExecuteCommand[0] == P_Command)
             {
                 // TODO: parse mark
                 var redirectTarget = topic.ExecuteCommand.Substring(2);
-                if (MessageBox.Show(this, "Redirect to " + redirectTarget + "?",
-                    "Redirect", MessageBoxButtons.YesNoCancel,
+                if (MessageBox.Show(this, this.Manager.GetString("RedirectTo") + redirectTarget + "?",
+                    this.Manager.GetString("Redirect"), MessageBoxButtons.YesNoCancel,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     viewModel.NavigateTo(new HelpUri(redirectTarget));
@@ -161,7 +165,7 @@ public partial class MainForm : Form
             if (i % 16 == 0)
             {
                 builder.Append("    ");
-                builder.Append(text_builder.ToString());
+                builder.Append(text_builder);
                 text_builder.Remove(0, text_builder.Length);
 
                 builder.AppendLine();
@@ -170,7 +174,7 @@ public partial class MainForm : Form
             }
             else if (i % 8 == 0)
             {
-                builder.Append(" ");
+                builder.Append(' ');
             }
             builder.Append(' ');
             builder.Append(data[i].ToString("X2"));
@@ -188,21 +192,21 @@ public partial class MainForm : Form
                 builder.Append(' ');
         }
         builder.Append("    ");
-        builder.Append(text_builder.ToString());
+        builder.Append(text_builder);
         return builder.ToString();
     }
 
     private void WebBrowserContent_Navigating(object sender, WebBrowserNavigatingEventArgs e)
     {
         var url = e.Url.OriginalString;
-        if (!url.StartsWith("about:blank?"))
+        if (!url.StartsWith(URL_AboutBlank))
             return;
 
         var target = url[12..];
         var link = new HelpUri(target);
         if (!viewModel.NavigateTo(link))
         {
-            MessageBox.Show("Cannot resolve link: " + target);
+            MessageBox.Show($"{this.Manager.GetString("CanNotResolveLink")}: {target}");
             e.Cancel = true;
         }
     }
@@ -255,18 +259,18 @@ public partial class MainForm : Form
         }
     }
 
-    private void mnuViewUnresolvedLinks_Click(object sender, EventArgs e)
+    private void MnuViewUnresolvedLinks_Click(object sender, EventArgs e)
     {
         viewModel.DumpHierarchy();
     }
 
-    private void mnuViewErrors_Click(object sender, EventArgs e)
+    private void MnuViewErrors_Click(object sender, EventArgs e)
     {
-        MessageBox.Show("There are " + viewModel.TopicsWithError.Count + " errors.");
+        MessageBox.Show(string.Format(this.Manager.GetString("ErrorsCount"), viewModel.TopicsWithError.Count));
         foreach (HelpTopic topic in viewModel.TopicsWithError)
         {
             if (MessageBox.Show($"{topic.Database.Name}: {topic.TopicIndex}: {topic.Title}",
-                "Error", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                this.Manager.GetString("Error"), MessageBoxButtons.OKCancel) != DialogResult.OK)
                 break;
         }
     }
@@ -280,15 +284,18 @@ public partial class MainForm : Form
     }
 }
 
-class HelpViewModel
+internal class HelpViewModel(MainForm mainForm)
 {
-    readonly HelpSystem system = new HelpSystem();
-    readonly Dictionary<HelpDatabase, string> databaseFileNames =
-        new Dictionary<HelpDatabase, string>();
-    readonly List<HelpTopic> history = new List<HelpTopic>();
+
+    private const string HdotContents = "h.contents";
+    private const string BACK_LINK = "!B";
+    readonly HelpSystem system = new();
+    readonly Dictionary<HelpDatabase, string> databaseFileNames = [];
+    readonly List<HelpTopic> history = [];
 
     private HelpDatabase activeDatabase;
     private HelpTopic activeTopic;
+    private readonly MainForm mainForm = mainForm;
 
     public void LoadSettings()
     {
@@ -326,7 +333,6 @@ class HelpViewModel
     public void AddDatabase(HelpDatabase database, string fileName)
     {
         ArgumentNullException.ThrowIfNull(database);
-
         system.Databases.Add(database);
         databaseFileNames[database] = Path.GetFullPath(fileName).ToLowerInvariant();
         DatabaseAdded?.Invoke(this, null);
@@ -336,7 +342,6 @@ class HelpViewModel
     public void RemoveDatabase(HelpDatabase database)
     {
         ArgumentNullException.ThrowIfNull(database);
-
         for (int i = history.Count - 1; i >= 0; i--)
         {
             if (history[i].Database == database)
@@ -354,7 +359,6 @@ class HelpViewModel
     public void LoadDatabases(string fileName)
     {
         ArgumentNullException.ThrowIfNull(fileName);
-
         var decoder = new BinaryHelpDeserializer();
         decoder.InvalidTopicData += OnInvalidTopicData;
 
@@ -369,9 +373,7 @@ class HelpViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format(
-                    "Cannot decode database file {0} @ {1}: {2}",
-                    fileName, startPosition, ex.Message));
+                MessageBox.Show($"{this.mainForm.Manager.GetString("CanNotDecode")} {fileName} @ {startPosition}: {ex.Message}");
                 break;
             }
             if (system.FindDatabase(database.Name) == null)
@@ -381,13 +383,13 @@ class HelpViewModel
         }
     }
 
-    private List<HelpTopic> topicsWithError = [];
+    private readonly List<HelpTopic> topicsWithError = [];
 
     public List<HelpTopic> TopicsWithError => topicsWithError;
 
     public List<InvalidTopicDataEventArgs> DeserializationErrors { get; } = [];
 
-    private void OnInvalidTopicData(object sender, QuickHelp.Serialization.InvalidTopicDataEventArgs e)
+    private void OnInvalidTopicData(object sender, InvalidTopicDataEventArgs e)
     {
         this.DeserializationErrors.Add(e);
     }
@@ -440,12 +442,12 @@ class HelpViewModel
     {
         if (uri.Type == HelpUriType.Command)
         {
-            if (uri.Target == "!B")
+            if (uri.Target == BACK_LINK)
             {
                 if (history.Count >= 2)
                 {
                     history.RemoveAt(history.Count - 1);
-                    ActiveTopic = history[history.Count - 1];
+                    ActiveTopic = history[^1];
                     return true;
                 }
             }
@@ -533,7 +535,7 @@ class HelpViewModel
         if (database == null)
             return null;
 
-        var topic = database.ResolveContext("h.contents");
+        var topic = database.ResolveContext(HdotContents);
         if (topic != null)
             return topic;
 
@@ -545,7 +547,7 @@ class HelpViewModel
 
     public void DumpHierarchy()
     {
-        var root = system.ResolveUri(null, new HelpUri("h.contents"));
+        var root = system.ResolveUri(null, new HelpUri(HdotContents));
         if (root == null)
             return;
 
@@ -553,12 +555,20 @@ class HelpViewModel
         //tree.Build(system, root);
         //tree.Dump();
     }
+
+    public override bool Equals(object obj) => obj is HelpViewModel model &&
+               EqualityComparer<MainForm>.Default.Equals(mainForm, model.mainForm);
+
+    public override int GetHashCode() => base.GetHashCode() ^ this.mainForm.GetHashCode();
+
+    public override string ToString() => $"{this.mainForm}:{base.ToString()}";
 }
 
-class HelpDatabaseViewItem(HelpDatabase database)
+class HelpDatabaseViewItem(MainForm mainForm, HelpDatabase database)
 {
     readonly HelpDatabase database = database;
 
+    readonly MainForm mainForm = mainForm;
     public HelpDatabase Database => this.database;
 
     public override string ToString()
@@ -568,8 +578,8 @@ class HelpDatabaseViewItem(HelpDatabase database)
             titleTopic.Lines.Count > 0 &&
             titleTopic.Lines[0].Text != null
             ? titleTopic.Lines[0].Text
-            : database.Name ?? "(unnamed database)"
-            ;
+            : database.Name ?? this.mainForm.Manager.GetString("UnnamedDatabase");
+        ;
     }
 }
 
@@ -616,7 +626,7 @@ class HelpTopicViewItem(int topicIndex, HelpTopic topic)
         }
 
         //return string.Format("[{0:000}] {1}", topicIndex, topic);
-        return "(Untitled Topic)";
+        return null;
     }
 }
 
