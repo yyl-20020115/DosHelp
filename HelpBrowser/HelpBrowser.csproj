@@ -24,6 +24,10 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Files\help.hlp" />
+    <None Remove="Files\qbasic.hlp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\QuickHelp\QuickHelp.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -37,5 +41,13 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\help.hlp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\qbasic.hlp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

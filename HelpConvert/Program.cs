@@ -23,6 +23,8 @@ public class Program
 
     static int Convert(string[] fileNames, bool isDryRun)
     {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
         var system = new HelpSystem();
         var converter = new BatchHtmlFormatter(system);
 

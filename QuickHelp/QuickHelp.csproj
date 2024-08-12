@@ -15,4 +15,7 @@
     <EmbeddedResource Include="Formatters\Default.css" />
     <Content Include="Serialization\Format.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Encoding" Version="4.3.0" />
+  </ItemGroup>
 </Project>

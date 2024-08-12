@@ -122,12 +122,7 @@ public partial class MainForm : Form
         txtNoFormat.Text = text;
         webBrowserReading.DocumentText = html;
         txtTopicTitle.Text = HelpTopicViewItem.GetTopicDisplayTitle(topic);
-        if (topic.Source is string)
-            txtSource.Text = (string)topic.Source;
-        else if (topic.Source is byte[])
-            txtSource.Text = FormatHexData((byte[])topic.Source);
-        else
-            txtSource.Text = "";
+        txtSource.Text = topic.Source is string _text ? _text : topic.Source is byte[] bytes ? FormatHexData(bytes) : "";
 
         // Special handling for commands.
         if (topic.IsHidden && !string.IsNullOrEmpty(topic.ExecuteCommand))
@@ -146,7 +141,7 @@ public partial class MainForm : Form
         }
     }
 
-    private void lstTopics_SelectedIndexChanged(object sender, EventArgs e)
+    private void LstTopics_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (lstTopics.SelectedItem is not HelpTopicViewItem item)
             return;
@@ -157,54 +152,54 @@ public partial class MainForm : Form
 
     private static string FormatHexData(byte[] data)
     {
-        var sbText = new StringBuilder(8);
-        var sb = new StringBuilder();
-        sb.Append("        0  1  2  3  4  5  6  7   8  9  A  B  C  D  E  F");
+        var text_builder = new StringBuilder(8);
+        var builder = new StringBuilder();
+        builder.Append("        0  1  2  3  4  5  6  7   8  9  A  B  C  D  E  F");
 
         for (int i = 0; i < data.Length; i++)
         {
             if (i % 16 == 0)
             {
-                sb.Append("    ");
-                sb.Append(sbText.ToString());
-                sbText.Remove(0, sbText.Length);
+                builder.Append("    ");
+                builder.Append(text_builder.ToString());
+                text_builder.Remove(0, text_builder.Length);
 
-                sb.AppendLine();
-                sb.Append(i.ToString("X4"));
-                sb.Append("  ");
+                builder.AppendLine();
+                builder.Append(i.ToString("X4"));
+                builder.Append("  ");
             }
             else if (i % 8 == 0)
             {
-                sb.Append(" ");
+                builder.Append(" ");
             }
-            sb.Append(' ');
-            sb.Append(data[i].ToString("X2"));
+            builder.Append(' ');
+            builder.Append(data[i].ToString("X2"));
 
             if (data[i] >= 32 && data[i] < 127)
-                sbText.Append((char)data[i]);
+                text_builder.Append((char)data[i]);
             else
-                sbText.Append('.');
+                text_builder.Append('.');
         }
         if (data.Length % 16 != 0)
         {
             for (int i = 0; i < 16 - data.Length % 16; i++)
-                sb.Append("   ");
+                builder.Append("   ");
             if (data.Length % 16 <= 8)
-                sb.Append(' ');
+                builder.Append(' ');
         }
-        sb.Append("    ");
-        sb.Append(sbText.ToString());
-        return sb.ToString();
+        builder.Append("    ");
+        builder.Append(text_builder.ToString());
+        return builder.ToString();
     }
 
-    private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+    private void WebBrowserContent_Navigating(object sender, WebBrowserNavigatingEventArgs e)
     {
-        string url = e.Url.OriginalString;
+        var url = e.Url.OriginalString;
         if (!url.StartsWith("about:blank?"))
             return;
 
-        string target = url.Substring(12);
-        HelpUri link = new HelpUri(target);
+        var target = url[12..];
+        var link = new HelpUri(target);
         if (!viewModel.NavigateTo(link))
         {
             MessageBox.Show("Cannot resolve link: " + target);
@@ -212,53 +207,45 @@ public partial class MainForm : Form
         }
     }
 
-    private void lstContexts_SelectedIndexChanged(object sender, EventArgs e)
+    private void LstContexts_SelectedIndexChanged(object sender, EventArgs e)
     {
-        string contextString = lstContexts.SelectedItem as string;
-        if (contextString == null)
+        if (lstContexts.SelectedItem is not string contextString)
             return;
 
         viewModel.NavigateTo(new HelpUri(contextString));
     }
 
-    private void mnuFileExit_Click(object sender, EventArgs e)
-    {
-        this.Close();
-    }
+    private void MnuFileExit_Click(object sender, EventArgs e) => this.Close();
 
-    private void mnuFileOpen_Click(object sender, EventArgs e)
+    private void MnuFileOpen_Click(object sender, EventArgs e)
     {
         if (openFileDialog1.ShowDialog() != DialogResult.OK)
             return;
 
-        string[] fileNames = openFileDialog1.FileNames;
-        foreach (string fileName in fileNames)
+        var fileNames = openFileDialog1.FileNames;
+        foreach (var fileName in fileNames)
         {
             viewModel.LoadDatabases(fileName);
         }
     }
 
-    private void cbDatabases_SelectedIndexChanged(object sender, EventArgs e)
+    private void CbDatabases_SelectedIndexChanged(object sender, EventArgs e)
     {
-        HelpDatabaseViewItem item = cbDatabases.SelectedItem as HelpDatabaseViewItem;
-        if (item == null)
-            viewModel.ActiveDatabase = null;
-        else
-            viewModel.ActiveDatabase = item.Database;
+        viewModel.ActiveDatabase = cbDatabases.SelectedItem is not HelpDatabaseViewItem item ? null : item.Database;
     }
 
-    private void btnAddArchive_Click(object sender, EventArgs e)
+    private void BtnAddArchive_Click(object sender, EventArgs e)
     {
-        mnuFileOpen_Click(sender, e);
+        MnuFileOpen_Click(sender, e);
     }
 
-    private void btnRemoveArchive_Click(object sender, EventArgs e)
+    private void BtnRemoveArchive_Click(object sender, EventArgs e)
     {
         int index = cbDatabases.SelectedIndex;
         if (index < 0)
             return;
 
-        HelpDatabaseViewItem item = cbDatabases.Items[index] as HelpDatabaseViewItem;
+        var item = cbDatabases.Items[index] as HelpDatabaseViewItem;
         viewModel.RemoveDatabase(item.Database);
 
         if (index < cbDatabases.Items.Count)
@@ -278,26 +265,18 @@ public partial class MainForm : Form
         MessageBox.Show("There are " + viewModel.TopicsWithError.Count + " errors.");
         foreach (HelpTopic topic in viewModel.TopicsWithError)
         {
-            if (MessageBox.Show(string.Format(
-                "{0}: {1}: {2}", topic.Database.Name, topic.TopicIndex, topic.Title),
+            if (MessageBox.Show($"{topic.Database.Name}: {topic.TopicIndex}: {topic.Title}",
                 "Error", MessageBoxButtons.OKCancel) != DialogResult.OK)
                 break;
         }
     }
 
-    private void RecoverTopicError(HelpTopic topic)
+    private void LstErrors_SelectedIndexChanged(object sender, EventArgs e)
     {
-
-    }
-
-    private void lstErrors_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        HelpTopicErrorViewItem item = lstErrors.SelectedItem as HelpTopicErrorViewItem;
-        if (item == null)
+        if (lstErrors.SelectedItem is not HelpTopicErrorViewItem item)
             return;
 
-        HelpTopic topic = item.Topic;
-        viewModel.ActiveTopic = topic;
+        viewModel.ActiveTopic = item.Topic;
     }
 }
 
@@ -316,7 +295,7 @@ class HelpViewModel
         var fileNames = Properties.Settings.Default.OpenFileNames;
         if (fileNames != null)
         {
-            foreach (string fileName in fileNames)
+            foreach (var fileName in fileNames)
             {
                 // TODO: handle exceptions
                 LoadDatabases(fileName);
@@ -329,41 +308,34 @@ class HelpViewModel
         var fileNames = new SortedDictionary<string, string>(
             StringComparer.InvariantCultureIgnoreCase);
 
-        foreach (string fileName in databaseFileNames.Values)
+        foreach (var fileName in databaseFileNames.Values)
         {
             fileNames[fileName] = fileName;
         }
 
         var savedNames = new System.Collections.Specialized.StringCollection();
-        foreach (string fileName in fileNames.Keys)
+        foreach (var fileName in fileNames.Keys)
         {
             savedNames.Add(fileName);
         }
         Properties.Settings.Default.OpenFileNames = savedNames;
     }
 
-    public IEnumerable<HelpDatabase> Databases
-    {
-        get { return system.Databases; }
-    }
+    public IEnumerable<HelpDatabase> Databases => system.Databases;
 
     public void AddDatabase(HelpDatabase database, string fileName)
     {
-        if (database == null)
-            throw new ArgumentNullException(nameof(database));
+        ArgumentNullException.ThrowIfNull(database);
 
         system.Databases.Add(database);
         databaseFileNames[database] = Path.GetFullPath(fileName).ToLowerInvariant();
-        if (DatabaseAdded != null)
-            DatabaseAdded(this, null);
-        if (this.ActiveDatabase == null)
-            this.ActiveDatabase = database;
+        DatabaseAdded?.Invoke(this, null);
+        this.ActiveDatabase ??= database;
     }
 
     public void RemoveDatabase(HelpDatabase database)
     {
-        if (database == null)
-            throw new ArgumentNullException(nameof(database));
+        ArgumentNullException.ThrowIfNull(database);
 
         for (int i = history.Count - 1; i >= 0; i--)
         {
@@ -376,61 +348,48 @@ class HelpViewModel
 
         databaseFileNames.Remove(database);
         system.Databases.Remove(database);
-        if (DatabaseRemoved != null)
-            DatabaseRemoved(this, null);
+        DatabaseRemoved?.Invoke(this, null);
     }
 
     public void LoadDatabases(string fileName)
     {
-        if (fileName == null)
-            throw new ArgumentNullException(nameof(fileName));
+        ArgumentNullException.ThrowIfNull(fileName);
 
-        var decoder = new QuickHelp.Serialization.BinaryHelpDeserializer();
+        var decoder = new BinaryHelpDeserializer();
         decoder.InvalidTopicData += OnInvalidTopicData;
 
-        using (FileStream stream = File.OpenRead(fileName))
+        using var stream = File.OpenRead(fileName);
+        while (stream.Position < stream.Length)
         {
-            while (stream.Position < stream.Length)
+            long startPosition = stream.Position;
+            HelpDatabase database;
+            try
             {
-                long startPosition = stream.Position;
-                HelpDatabase database;
-                try
-                {
-                    database = decoder.DeserializeDatabase(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(string.Format(
-                        "Cannot decode database file {0} @ {1}: {2}",
-                        fileName, startPosition, ex.Message));
-                    break;
-                }
-                if (system.FindDatabase(database.Name) == null)
-                {
-                    AddDatabase(database, fileName);
-                }
+                database = decoder.DeserializeDatabase(stream);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format(
+                    "Cannot decode database file {0} @ {1}: {2}",
+                    fileName, startPosition, ex.Message));
+                break;
+            }
+            if (system.FindDatabase(database.Name) == null)
+            {
+                AddDatabase(database, fileName);
             }
         }
     }
 
-    private List<HelpTopic> topicsWithError = new List<HelpTopic>();
+    private List<HelpTopic> topicsWithError = [];
 
-    public List<HelpTopic> TopicsWithError
-    {
-        get { return topicsWithError; }
-    }
+    public List<HelpTopic> TopicsWithError => topicsWithError;
 
-    private List<InvalidTopicDataEventArgs> deserializationErrors =
-        new List<InvalidTopicDataEventArgs>();
-
-    public List<InvalidTopicDataEventArgs> DeserializationErrors
-    {
-        get { return this.deserializationErrors; }
-    }
+    public List<InvalidTopicDataEventArgs> DeserializationErrors { get; } = [];
 
     private void OnInvalidTopicData(object sender, QuickHelp.Serialization.InvalidTopicDataEventArgs e)
     {
-        this.deserializationErrors.Add(e);
+        this.DeserializationErrors.Add(e);
     }
 
     public event EventHandler DatabaseAdded;
@@ -439,15 +398,14 @@ class HelpViewModel
 
     public HelpDatabase ActiveDatabase
     {
-        get { return activeDatabase; }
+        get => activeDatabase;
         set
         {
             if (this.activeDatabase == value)
                 return;
 
             this.activeDatabase = value;
-            if (ActiveDatabaseChanged != null)
-                ActiveDatabaseChanged(this, null);
+            ActiveDatabaseChanged?.Invoke(this, null);
 
             if (this.activeTopic == null ||
                 this.activeTopic.Database != activeDatabase)
@@ -457,7 +415,7 @@ class HelpViewModel
 
     public HelpTopic ActiveTopic
     {
-        get { return activeTopic; }
+        get => activeTopic;
         set
         {
             if (this.activeTopic == value)
@@ -470,8 +428,7 @@ class HelpViewModel
                     history.Add(value);
                 this.ActiveDatabase = activeTopic.Database;
             }
-            if (ActiveTopicChanged != null)
-                ActiveTopicChanged(this, null);
+            ActiveTopicChanged?.Invoke(this, null);
         }
     }
 
@@ -495,13 +452,13 @@ class HelpViewModel
             return false;
         }
 
-        HelpTopic topic = system.ResolveUri(activeDatabase, uri);
+        var topic = system.ResolveUri(activeDatabase, uri);
         if (topic == null)
         {
             if (uri.Type == HelpUriType.GlobalContext &&
                 system.FindDatabase(uri.DatabaseName) == null)
             {
-                string fileName = FindFile(activeDatabase, uri.DatabaseName);
+                var fileName = FindFile(activeDatabase, uri.DatabaseName);
                 if (fileName != null)
                 {
                     LoadDatabases(fileName);
@@ -522,7 +479,7 @@ class HelpViewModel
 
     private IEnumerable<string> GetSearchPaths(HelpDatabase referrer)
     {
-        string path = this.databaseFileNames[referrer];
+        var path = this.databaseFileNames[referrer];
         int maxLevels = 2;
         for (int level = 0; level < maxLevels; level++)
         {
@@ -537,11 +494,11 @@ class HelpViewModel
 
     private IEnumerable<string> GetSearchPaths()
     {
-        Dictionary<string, bool> searched = new Dictionary<string, bool>();
-        foreach (string databaseFileName in this.databaseFileNames.Values)
+        Dictionary<string, bool> searched = [];
+        foreach (var databaseFileName in this.databaseFileNames.Values)
         {
-            string dirPath = Path.GetDirectoryName(databaseFileName);
-            string parentPath = Path.GetDirectoryName(dirPath);
+            var dirPath = Path.GetDirectoryName(databaseFileName);
+            var parentPath = Path.GetDirectoryName(dirPath);
             if (!string.IsNullOrEmpty(parentPath) &&
                 !searched.ContainsKey(parentPath.ToLowerInvariant()))
             {
@@ -553,16 +510,15 @@ class HelpViewModel
 
     private string FindFile(HelpDatabase referrer, string fileName)
     {
-        if (referrer == null)
-            throw new ArgumentNullException(nameof(referrer));
-        if (fileName == null)
-            throw new ArgumentNullException(nameof(fileName));
+        ArgumentNullException.ThrowIfNull(referrer);
 
-        foreach (string searchPath in GetSearchPaths(referrer))
+        ArgumentNullException.ThrowIfNull(fileName);
+
+        foreach (var searchPath in GetSearchPaths(referrer))
         {
-            string[] fileNames = Directory.GetFiles(
+            var fileNames = Directory.GetFiles(
                 searchPath, fileName, SearchOption.AllDirectories);
-            foreach (string filePath in fileNames)
+            foreach (var filePath in fileNames)
             {
                 if (!this.databaseFileNames.ContainsValue(
                     filePath.ToLowerInvariant()))
@@ -577,7 +533,7 @@ class HelpViewModel
         if (database == null)
             return null;
 
-        HelpTopic topic = database.ResolveContext("h.contents");
+        var topic = database.ResolveContext("h.contents");
         if (topic != null)
             return topic;
 
@@ -589,7 +545,7 @@ class HelpViewModel
 
     public void DumpHierarchy()
     {
-        HelpTopic root = system.ResolveUri(null, new HelpUri("h.contents"));
+        var root = system.ResolveUri(null, new HelpUri("h.contents"));
         if (root == null)
             return;
 
@@ -599,55 +555,34 @@ class HelpViewModel
     }
 }
 
-class HelpDatabaseViewItem
+class HelpDatabaseViewItem(HelpDatabase database)
 {
-    readonly HelpDatabase database;
+    readonly HelpDatabase database = database;
 
-    public HelpDatabaseViewItem(HelpDatabase database)
-    {
-        this.database = database;
-    }
-
-    public HelpDatabase Database
-    {
-        get { return this.database; }
-    }
+    public HelpDatabase Database => this.database;
 
     public override string ToString()
     {
-        HelpTopic titleTopic = database.ResolveContext("h.title");
-        if (titleTopic != null &&
+        var titleTopic = database.ResolveContext("h.title");
+        return titleTopic != null &&
             titleTopic.Lines.Count > 0 &&
-            titleTopic.Lines[0].Text != null)
-            return titleTopic.Lines[0].Text;
-
-        if (database.Name == null)
-            return "(unnamed database)";
-        else
-            return database.Name;
+            titleTopic.Lines[0].Text != null
+            ? titleTopic.Lines[0].Text
+            : database.Name ?? "(unnamed database)"
+            ;
     }
 }
 
-class HelpTopicViewItem
+class HelpTopicViewItem(int topicIndex, HelpTopic topic)
 {
-    readonly int topicIndex;
-    readonly HelpTopic topic;
+    readonly int topicIndex = topicIndex;
+    readonly HelpTopic topic = topic;
 
-    public HelpTopicViewItem(int topicIndex, HelpTopic topic)
-    {
-        this.topicIndex = topicIndex;
-        this.topic = topic;
-    }
+    public HelpTopic Topic => topic;
 
-    public HelpTopic Topic
-    {
-        get { return topic; }
-    }
+    public int TopicIndex => topicIndex;
 
-    public override string ToString()
-    {
-        return GetTopicDisplayTitle(topic);
-    }
+    public override string ToString() => GetTopicDisplayTitle(topic);
 
     public static string GetTopicDisplayTitle(HelpTopic topic)
     {
@@ -659,8 +594,8 @@ class HelpTopicViewItem
 
         // try find a context string that points to this topic
         // TODO: make this part of topic's member
-        List<string> contextStrings = new List<string>();
-        foreach (string contextString in topic.Database.ContextStrings)
+        List<string> contextStrings = [];
+        foreach (var contextString in topic.Database.ContextStrings)
         {
             if (topic.Database.ResolveContext(contextString) == topic)
                 contextStrings.Add(contextString);
@@ -668,16 +603,16 @@ class HelpTopicViewItem
         if (contextStrings.Count > 0)
         {
             contextStrings.Sort();
-            StringBuilder sb = new StringBuilder();
-            sb.Append('[');
-            foreach (string contextString in contextStrings)
+            StringBuilder builder = new();
+            builder.Append('[');
+            foreach (var contextString in contextStrings)
             {
-                if (sb.Length > 1)
-                    sb.Append(", ");
-                sb.Append(contextString);
+                if (builder.Length > 1)
+                    builder.Append(", ");
+                builder.Append(contextString);
             }
-            sb.Append(']');
-            return sb.ToString();
+            builder.Append(']');
+            return builder.ToString();
         }
 
         //return string.Format("[{0:000}] {1}", topicIndex, topic);
@@ -685,24 +620,12 @@ class HelpTopicViewItem
     }
 }
 
-class HelpTopicErrorViewItem
+class HelpTopicErrorViewItem(InvalidTopicDataEventArgs error)
 {
-    readonly InvalidTopicDataEventArgs m_error;
+    readonly InvalidTopicDataEventArgs m_error = error;
 
-    public HelpTopicErrorViewItem(InvalidTopicDataEventArgs error)
-    {
-        m_error = error;
-    }
-
-    public HelpTopic Topic
-    {
-        get { return m_error.Topic; }
-    }
+    public HelpTopic Topic => m_error.Topic;
 
     public override string ToString()
-    {
-        return string.Format("[{0}: {1}] {2}",
-            m_error.Topic.TopicIndex, m_error.Topic.Title,
-            m_error.Message);
-    }
+        => $"[{m_error.Topic.TopicIndex}: {m_error.Topic.Title}] {m_error.Message}";
 }

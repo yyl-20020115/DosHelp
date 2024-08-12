@@ -112,7 +112,7 @@ partial class MainForm
         resources.ApplyResources(lstTopics, "lstTopics");
         lstTopics.FormattingEnabled = true;
         lstTopics.Name = "lstTopics";
-        lstTopics.SelectedIndexChanged += lstTopics_SelectedIndexChanged;
+        lstTopics.SelectedIndexChanged += LstTopics_SelectedIndexChanged;
         // 
         // tabContexts
         // 
@@ -126,7 +126,7 @@ partial class MainForm
         resources.ApplyResources(lstContexts, "lstContexts");
         lstContexts.FormattingEnabled = true;
         lstContexts.Name = "lstContexts";
-        lstContexts.SelectedIndexChanged += lstContexts_SelectedIndexChanged;
+        lstContexts.SelectedIndexChanged += LstContexts_SelectedIndexChanged;
         // 
         // tabErrors
         // 
@@ -140,7 +140,7 @@ partial class MainForm
         resources.ApplyResources(lstErrors, "lstErrors");
         lstErrors.FormattingEnabled = true;
         lstErrors.Name = "lstErrors";
-        lstErrors.SelectedIndexChanged += lstErrors_SelectedIndexChanged;
+        lstErrors.SelectedIndexChanged += LstErrors_SelectedIndexChanged;
         // 
         // panel1
         // 
@@ -156,21 +156,21 @@ partial class MainForm
         cbDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
         cbDatabases.FormattingEnabled = true;
         cbDatabases.Name = "cbDatabases";
-        cbDatabases.SelectedIndexChanged += cbDatabases_SelectedIndexChanged;
+        cbDatabases.SelectedIndexChanged += CbDatabases_SelectedIndexChanged;
         // 
         // btnAddArchive
         // 
         resources.ApplyResources(btnAddArchive, "btnAddArchive");
         btnAddArchive.Name = "btnAddArchive";
         btnAddArchive.UseVisualStyleBackColor = true;
-        btnAddArchive.Click += btnAddArchive_Click;
+        btnAddArchive.Click += BtnAddArchive_Click;
         // 
         // btnRemoveArchive
         // 
         resources.ApplyResources(btnRemoveArchive, "btnRemoveArchive");
         btnRemoveArchive.Name = "btnRemoveArchive";
         btnRemoveArchive.UseVisualStyleBackColor = true;
-        btnRemoveArchive.Click += btnRemoveArchive_Click;
+        btnRemoveArchive.Click += BtnRemoveArchive_Click;
         // 
         // tabControlReading
         // 
@@ -193,7 +193,7 @@ partial class MainForm
         // 
         resources.ApplyResources(webBrowserReading, "webBrowserReading");
         webBrowserReading.Name = "webBrowserReading";
-        webBrowserReading.Navigating += webBrowser1_Navigating;
+        webBrowserReading.Navigating += WebBrowserContent_Navigating;
         // 
         // txtTopicTitle
         // 
@@ -244,7 +244,7 @@ partial class MainForm
         // 
         mnuFileOpen.Name = "mnuFileOpen";
         resources.ApplyResources(mnuFileOpen, "mnuFileOpen");
-        mnuFileOpen.Click += mnuFileOpen_Click;
+        mnuFileOpen.Click += MnuFileOpen_Click;
         // 
         // toolStripMenuItem1
         // 
@@ -255,7 +255,7 @@ partial class MainForm
         // 
         mnuFileExit.Name = "mnuFileExit";
         resources.ApplyResources(mnuFileExit, "mnuFileExit");
-        mnuFileExit.Click += mnuFileExit_Click;
+        mnuFileExit.Click += MnuFileExit_Click;
         // 
         // viewToolStripMenuItem
         // 
