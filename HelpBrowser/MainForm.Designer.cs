@@ -29,8 +29,7 @@ partial class MainForm
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
-        System.ComponentModel.ComponentResourceManager resources 
-            = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         splitContainerMain = new System.Windows.Forms.SplitContainer();
         tabControlIndices = new System.Windows.Forms.TabControl();
         tabTopics = new System.Windows.Forms.TabPage();
@@ -84,27 +83,29 @@ partial class MainForm
         // 
         // splitContainerMain.Panel1
         // 
+        resources.ApplyResources(splitContainerMain.Panel1, "splitContainerMain.Panel1");
         splitContainerMain.Panel1.Controls.Add(tabControlIndices);
         splitContainerMain.Panel1.Controls.Add(panelMain);
         // 
         // splitContainerMain.Panel2
         // 
+        resources.ApplyResources(splitContainerMain.Panel2, "splitContainerMain.Panel2");
         splitContainerMain.Panel2.Controls.Add(tabControlReading);
         // 
         // tabControlIndices
         // 
+        resources.ApplyResources(tabControlIndices, "tabControlIndices");
         tabControlIndices.Controls.Add(tabTopics);
         tabControlIndices.Controls.Add(tabContexts);
         tabControlIndices.Controls.Add(tabErrors);
-        resources.ApplyResources(tabControlIndices, "tabControlIndices");
         tabControlIndices.Multiline = true;
         tabControlIndices.Name = "tabControlIndices";
         tabControlIndices.SelectedIndex = 0;
         // 
         // tabTopics
         // 
-        tabTopics.Controls.Add(lstTopics);
         resources.ApplyResources(tabTopics, "tabTopics");
+        tabTopics.Controls.Add(lstTopics);
         tabTopics.Name = "tabTopics";
         tabTopics.UseVisualStyleBackColor = true;
         // 
@@ -117,8 +118,8 @@ partial class MainForm
         // 
         // tabContexts
         // 
-        tabContexts.Controls.Add(lstContexts);
         resources.ApplyResources(tabContexts, "tabContexts");
+        tabContexts.Controls.Add(lstContexts);
         tabContexts.Name = "tabContexts";
         tabContexts.UseVisualStyleBackColor = true;
         // 
@@ -131,8 +132,8 @@ partial class MainForm
         // 
         // tabErrors
         // 
-        tabErrors.Controls.Add(lstErrors);
         resources.ApplyResources(tabErrors, "tabErrors");
+        tabErrors.Controls.Add(lstErrors);
         tabErrors.Name = "tabErrors";
         tabErrors.UseVisualStyleBackColor = true;
         // 
@@ -143,13 +144,13 @@ partial class MainForm
         lstErrors.Name = "lstErrors";
         lstErrors.SelectedIndexChanged += LstErrors_SelectedIndexChanged;
         // 
-        // panel1
+        // panelMain
         // 
-        resources.ApplyResources(panelMain, "panel1");
+        resources.ApplyResources(panelMain, "panelMain");
         panelMain.Controls.Add(cbDatabases);
         panelMain.Controls.Add(btnAddArchive);
         panelMain.Controls.Add(btnRemoveArchive);
-        panelMain.Name = "panel1";
+        panelMain.Name = "panelMain";
         // 
         // cbDatabases
         // 
@@ -184,9 +185,9 @@ partial class MainForm
         // 
         // tabHtml
         // 
+        resources.ApplyResources(tabHtml, "tabHtml");
         tabHtml.Controls.Add(webBrowserReading);
         tabHtml.Controls.Add(txtTopicTitle);
-        resources.ApplyResources(tabHtml, "tabHtml");
         tabHtml.Name = "tabHtml";
         tabHtml.UseVisualStyleBackColor = true;
         // 
@@ -198,15 +199,15 @@ partial class MainForm
         // 
         // txtTopicTitle
         // 
-        txtTopicTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
         resources.ApplyResources(txtTopicTitle, "txtTopicTitle");
+        txtTopicTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
         txtTopicTitle.Name = "txtTopicTitle";
         txtTopicTitle.ReadOnly = true;
         // 
         // tabText
         // 
-        tabText.Controls.Add(txtNoFormat);
         resources.ApplyResources(tabText, "tabText");
+        tabText.Controls.Add(txtNoFormat);
         tabText.Name = "tabText";
         tabText.UseVisualStyleBackColor = true;
         // 
@@ -218,8 +219,8 @@ partial class MainForm
         // 
         // tabSource
         // 
-        tabSource.Controls.Add(txtSource);
         resources.ApplyResources(tabSource, "tabSource");
+        tabSource.Controls.Add(txtSource);
         tabSource.Name = "tabSource";
         tabSource.UseVisualStyleBackColor = true;
         // 
@@ -231,49 +232,49 @@ partial class MainForm
         // 
         // menuStripMain
         // 
-        menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuFile, viewToolStripMenuItem });
         resources.ApplyResources(menuStripMain, "menuStripMain");
+        menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuFile, viewToolStripMenuItem });
         menuStripMain.Name = "menuStripMain";
         // 
         // mnuFile
         // 
+        resources.ApplyResources(mnuFile, "mnuFile");
         mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuFileOpen, toolStripMenuItem1, mnuFileExit });
         mnuFile.Name = "mnuFile";
-        resources.ApplyResources(mnuFile, "mnuFile");
         // 
         // mnuFileOpen
         // 
-        mnuFileOpen.Name = "mnuFileOpen";
         resources.ApplyResources(mnuFileOpen, "mnuFileOpen");
+        mnuFileOpen.Name = "mnuFileOpen";
         mnuFileOpen.Click += MnuFileOpen_Click;
         // 
         // toolStripMenuItem1
         // 
-        toolStripMenuItem1.Name = "toolStripMenuItem1";
         resources.ApplyResources(toolStripMenuItem1, "toolStripMenuItem1");
+        toolStripMenuItem1.Name = "toolStripMenuItem1";
         // 
         // mnuFileExit
         // 
-        mnuFileExit.Name = "mnuFileExit";
         resources.ApplyResources(mnuFileExit, "mnuFileExit");
+        mnuFileExit.Name = "mnuFileExit";
         mnuFileExit.Click += MnuFileExit_Click;
         // 
         // viewToolStripMenuItem
         // 
+        resources.ApplyResources(viewToolStripMenuItem, "viewToolStripMenuItem");
         viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuViewUnresolvedLinks, mnuViewErrors });
         viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-        resources.ApplyResources(viewToolStripMenuItem, "viewToolStripMenuItem");
         // 
         // mnuViewUnresolvedLinks
         // 
-        mnuViewUnresolvedLinks.Name = "mnuViewUnresolvedLinks";
         resources.ApplyResources(mnuViewUnresolvedLinks, "mnuViewUnresolvedLinks");
+        mnuViewUnresolvedLinks.Name = "mnuViewUnresolvedLinks";
         mnuViewUnresolvedLinks.Click += MnuViewUnresolvedLinks_Click;
         // 
         // mnuViewErrors
         // 
-        mnuViewErrors.Name = "mnuViewErrors";
         resources.ApplyResources(mnuViewErrors, "mnuViewErrors");
+        mnuViewErrors.Name = "mnuViewErrors";
         mnuViewErrors.Click += MnuViewErrors_Click;
         // 
         // openFileDialog1
@@ -283,8 +284,8 @@ partial class MainForm
         // 
         // contextMenuStrip1
         // 
-        contextMenuStrip1.Name = "contextMenuStrip1";
         resources.ApplyResources(contextMenuStrip1, "contextMenuStrip1");
+        contextMenuStrip1.Name = "contextMenuStrip1";
         // 
         // MainForm
         // 
@@ -297,7 +298,6 @@ partial class MainForm
         FormClosed += MainForm_FormClosed;
         Load += MainForm_Load;
         splitContainerMain.Panel1.ResumeLayout(false);
-        splitContainerMain.Panel1.PerformLayout();
         splitContainerMain.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainerMain).EndInit();
         splitContainerMain.ResumeLayout(false);
